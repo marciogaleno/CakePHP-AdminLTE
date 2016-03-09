@@ -56,4 +56,32 @@ class ProfilesTable extends Table
 
         return $validator;
     }
+
+    public static function isAdmin($profile_id) {
+
+        return $profile_id == Configure::read('AdminProfileId');
+    }
+
+    public function getAreas($profile_id) {
+        
+        $profile = $this->find()
+            ->select(['id'])
+            ->where(['id' => $profile_id])
+            ->contain(['Areas' => function ($q) {
+                return $q->order(['controller_label' => 'ASC']);
+            }
+        ]);
+
+        $areas = array();
+
+        foreach ($profile as $area) {
+            if (!isset($areas[$area->controller]))
+                $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
+
+            $areas[$area->controller]['action'][$area->action] = $area->appear;
+            $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
+        }
+        
+        return $areas;
+    }
 }

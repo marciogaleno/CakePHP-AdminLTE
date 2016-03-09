@@ -17,7 +17,7 @@ class ProfilesController extends AppController
      * @return \Cake\Network\Response|null
      */
     public function index()
-    {
+    {          
         $profiles = $this->paginate($this->Profiles);
 
         $this->set(compact('profiles'));
