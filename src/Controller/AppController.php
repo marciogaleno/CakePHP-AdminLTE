@@ -29,6 +29,8 @@ class AppController extends Controller
 {
 
     public $Session;
+
+    private $title_for_layout;
     /**
      * Initialization hook method.
      *
@@ -67,6 +69,8 @@ class AppController extends Controller
         $this->loadModel('Profiles');
         $this->Auth->allow(['add', 'edit', 'index']);
 
+        $this->title_for_layout = 'Cordel';
+
     }
 
     /**
@@ -76,7 +80,9 @@ class AppController extends Controller
      * @return void
      */
     public function beforeRender(Event $event)
-    {
+    {   
+        $this->set('title_for_layout', $this->title_for_layout);
+
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
