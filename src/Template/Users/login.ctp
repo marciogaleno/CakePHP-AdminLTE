@@ -1,6 +1,22 @@
-<h1>Login</h1>
 <?= $this->Form->create() ?>
-<?= $this->BForm->input('email', array('label' => false)) ?>
-<?= $this->BForm->input('password', array('label' => false)) ?>
-<?php //$this->BForm->button('Login',array('label' => 'login')) ?>
-<?= $this->Form->end() ?>
+  <div class="form-group has-feedback">
+    <?= $this->Form->input('email', ['class' => 'form-control', 'placeholder' => 'E-mail', 'label' => false])?>
+    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+  </div>
+  <div class="form-group has-feedback">
+  <?= $this->Form->input('password', ['type' => 'password', 'class' => 'form-control', 'placeholder' => 'Senha', 'label' => false])?>
+    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+  </div>
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="checkbox icheck">
+        <label>
+          <input type="checkbox"> Esqueci minha senha
+        </label>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <?= $this->Form->submit('Entrar', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
+    </div>
+  </div>
+  <?= $this->Form->end()?>
