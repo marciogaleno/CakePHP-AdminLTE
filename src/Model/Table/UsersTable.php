@@ -67,4 +67,13 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']));
         return $rules;
     }
+
+    public function lastLogin( $user_id )
+    {
+        
+        $user = $this->get($user_id); // Return article with id 12
+
+        $user->last_login = date('Y-m-d H:i:s');
+        $this->save($user);
+    }
 }

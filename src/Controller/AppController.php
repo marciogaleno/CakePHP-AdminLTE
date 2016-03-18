@@ -67,6 +67,7 @@ class AppController extends Controller
 
         $this->Session = $this->request->session();
         $this->loadModel('Profiles');
+        $this->loadModel('Users');
         $this->Auth->allow(['add', 'edit', 'index']);
 
         $this->title_for_layout = 'Cordel';
@@ -90,17 +91,20 @@ class AppController extends Controller
         }
     }
 
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event) 
+    {
 
         //$this->request->session()->write('teste', 'funcioando maluco');
         //echo $this->request->session()->read('teste');die;
         //Session::read('teste');
+        //dump($this->request->session()->read('Auth.User'));
         if ($this->Auth->user()) {  
+            //$this->request->session()->write('Auth.User', $this->Auth->user());
 
-            if (!$this->Session->read("Auth.User.Profile")) {
+            if (!$this->Session->check("Auth.User.Profile")) {
 
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
-                // $this->Profile->User->lastLogin($this->Auth->user("id"));
+                $this->Users->lastLogin($this->Auth->user("id"));
                 // $this->Menu->mount();
             }
 
@@ -114,7 +118,8 @@ class AppController extends Controller
         return true;
     }
 
-    protected function checkAccess($controller = null, $action = null) {
+    protected function checkAccess($controller = null, $action = null) 
+    {
 
         if ($controller == null || $action == null) {
 
