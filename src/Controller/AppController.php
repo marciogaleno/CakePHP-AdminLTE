@@ -43,9 +43,10 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-
+        
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Menu');
 
         $this->loadComponent(
             'Auth', [
@@ -105,7 +106,7 @@ class AppController extends Controller
 
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
                 $this->Users->lastLogin($this->Auth->user("id"));
-                // $this->Menu->mount();
+                $this->Menu->mount();
             }
 
             // if (!$this->Auth->user('pass_switched') && $this->action != 'manageAccount')
