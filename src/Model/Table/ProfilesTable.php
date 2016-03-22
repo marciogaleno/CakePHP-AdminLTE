@@ -36,6 +36,11 @@ class ProfilesTable extends Table
             'targetForeignKey' => 'area_id',
             'joinTable' => 'areas_profiles'
         ]);
+
+        $this->hasMany('Users', [
+            'className' => 'Users',
+            'foreignKey' => 'profile_id'
+        ]);
     }
 
     /**

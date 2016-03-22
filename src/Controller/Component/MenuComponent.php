@@ -35,6 +35,8 @@ class MenuComponent extends Component
 	public function mount()
 	{
 
+		
+
 		$profiles = TableRegistry::get('Profiles');
 
 		$areas = $profiles->find()
@@ -52,7 +54,7 @@ class MenuComponent extends Component
 
 				} ] );
 
-		$this->Session->write( 'Auth.User.Menu', $areas[ 'Area' ] );
+		$this->request->session()->write( 'Auth.User.Menu', $areas->Area );
 				
 		// $this->Profiles->find( 'first', array(
 		// 	'conditions' => array( 'Profile.id' => $this->Session->read( 'Auth.User.profile_id' ) ),

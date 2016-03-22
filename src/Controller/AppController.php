@@ -99,6 +99,9 @@ class AppController extends Controller
         //echo $this->request->session()->read('teste');die;
         //Session::read('teste');
         //dump($this->request->session()->read('Auth.User'));
+
+        //dump($this->request->session()->write( 'Auth.User.Menu'));
+        //dump($this->request->session()->read('Auth.User'));
         if ($this->Auth->user()) {  
             //$this->request->session()->write('Auth.User', $this->Auth->user());
 
