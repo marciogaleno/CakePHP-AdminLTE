@@ -74,6 +74,7 @@ class FrontEndHelper extends Helper
 		$areas = $this->Session->read( "Auth.User.Menu" );
 		$permissions = $this->Session->read( "Auth.User.Profile" );
 		
+		$this->request->session()->read( 'Auth.User.Menu');
 		foreach ($areas as $area) {
 
 			// se tiver permissao para controller/action

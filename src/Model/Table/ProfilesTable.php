@@ -75,11 +75,11 @@ class ProfilesTable extends Table
             ->contain(['Areas' => function ($q) {
                 return $q->order(['controller_label' => 'ASC']);
             }
-        ]);
+        ])->toArray();
 
         $areas = array();
 
-        foreach ($profile as $area) {
+        foreach ($profile[0]->areas as $area) {
             if (!isset($areas[$area->controller]))
                 $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
 

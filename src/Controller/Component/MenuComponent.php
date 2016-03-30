@@ -33,48 +33,29 @@ class MenuComponent extends Component
 	}
 
 	public function mount()
-	{
-
-		
+	{	
 
 		$profiles = TableRegistry::get('Profiles');
-		dump( $this->request->session()->read('Auth.User.profile_id'));
+
 		$areas = $profiles->find()
 				->select('id')
 				->where(['id' =>  $this->request->session()->read('Auth.User.profile_id')])
-				->contain(['Areas' => function ($query){
-					return $query
-						->select(['controller', 'controller_label', 'action'])
-						->where(['Areas.appear' => '1', 'parent_id' => null])
-						->contain(['ChildAreas' => function ($query) {
-							return $query
-										->select(['controller', 'controller_label', 'action'])
-										->where(['ChildAreas.appear' => '1']);
-						}]);
+				->contain(['Areas' => function ($query) {
 
-				} ] )
+					return 
+						$query->select(['controller', 'controller_label', 'action'])
+						 	  ->where(['Areas.appear' => 1, function ($exp, $q){
+										return $exp->isNull('Areas.parent_id');
+							  }])
+							  ->contain(['ChildAreas' => function ($query) {
+									return $query->select(['controller', 'controller_label', 'action'])
+									 			 ->where(['ChildAreas.appear' => 1]);
+							  }]);
+
+				}])
 				->toArray();
+		
+		$this->request->session()->write( 'Auth.User.Menu', $areas);
 
-		foreach ($areas as $key => $areas) {
-			dump($areas);
-		}
-
-		
-		$this->request->session()->write( 'Auth.User.Menu', $areas->Area );
-				
-		// $this->Profiles->find( 'first', array(
-		// 	'conditions' => array( 'Profile.id' => $this->Session->read( 'Auth.User.profile_id' ) ),
-		// 	'fields' => 'id',
-		// 	'contain' => array(
-		// 		'Area' => array(
-		// 			'order' => 'Area.controller_label ASC',
-		// 			'conditions' => array( 'Area.appear' => '1', 'Area.parent_id' => null ),
-		// 			'fields' => array( 'controller', 'controller_label', 'action' ),
-		// 			'AreaChild' => array(
-		// 				'conditions' => array( 'AreaChild.appear' => '1' ),
-		// 				'fields' => array( 'controller', 'controller_label', 'action' )
-		// ) ) ) ) );
-		
-		
 	}
 }
