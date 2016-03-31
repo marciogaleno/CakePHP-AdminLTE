@@ -16,8 +16,9 @@
     </form>
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
-    <ul class="sidebar-menu">
-      <li class="header">MAIN NAVIGATION</li>
+    <?= $this->FrontEnd->getMenu() ?>
+   <!--  <ul class="sidebar-menu">
+      <li class="header">Menu</li>
       <li class="active treeview">
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -39,7 +40,7 @@
 
 
 
-      </li>
+      </li> -->
 <!--       <li class="header">LABELS</li>
  -->    </ul>
   </section>

@@ -25,8 +25,8 @@ class MenuComponent extends Component
 		//	setando a opcao selecionada do menu
 		if( !empty( $this->Controller->setMenu ) ){
 			
-			$this->Session->write( "Menu", null );
-			$this->Session->write( "Menu.{$this->controller->setMenu}", 'active' );
+			$this->request->session()->write( "Menu", null );
+			$this->request->session()->write( "Menu.{$this->Controller->setMenu}", 'active' );
 
 		} else
 			 $this->request->session()->write( "Menu", null );
@@ -55,7 +55,7 @@ class MenuComponent extends Component
 				}])
 				->toArray();
 		
-		$this->request->session()->write( 'Auth.User.Menu', $areas);
+		$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
 
 	}
 }

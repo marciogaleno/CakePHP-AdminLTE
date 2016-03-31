@@ -71,25 +71,42 @@ class FrontEndHelper extends Helper
 	public function getMenu(){
 		
 		$string = '';
-		$areas = $this->Session->read( "Auth.User.Menu" );
-		$permissions = $this->Session->read( "Auth.User.Profile" );
+		$areas = $this->request->session()->read( "Auth.User.Menu" );
+		$permissions = $this->request->session()->read( "Auth.User.Profile" );
 		
-		$this->request->session()->read( 'Auth.User.Menu');
+		dump($areas);
+		dump($permissions);
+		dump($this->request->session()->read( "Menu.Page" ) );
 		foreach ($areas as $area) {
 
+			$string .= '<ul class="sidebar-menu">';
+			$string .= '<li class="header">Menu</li>';
 			// se tiver permissao para controller/action
-			if( !empty( $permissions[ $area['controller'] ][ 'action' ][ $area['action'] ] ) ){
+			if( !empty( $permissions[ $area->controller][ 'action' ][ $area->action ] ) ){
 
 				// nao eh submenu
-				if( empty( $area[ 'AreaChild' ] ) )
-					$string .= '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
+				if( empty( $area[ 'child_areas' ] ) ){
 
-				else { // submenu
+					$string .= '<li class="'. $this->optionSelected( $area[ 'controller' ] ) . ' treeview">';
+						$string .= '<a href="#">';
+						$string .= '<i class="fa fa-dashboard"></i> <span>'. $area->controller_label .'</span> <i class="fa fa-angle-left pull-right"></i>';
+						$string .= '</a>';
+
+						foreach ($area as $key => $value) {
+							# code...
+						}
+						$string .= '<ul class="treeview-menu">';
+						$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
+						$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
+						$string .= '</ul>';
+					$string .= '</li>';
+
+				}else { // submenu
 
 					$string .= '<li class="dropdown">'.
 						'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $area[ 'controller_label' ] .' <b class="caret"></b></a>'.
 					    '<ul class="dropdown-menu">'.
-					    '<li class="'.$this->optionSelected( $area[ 'controller' ] ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
+					    '<li class="'.$this->optionSelected( $area->controller ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
 					
 					foreach( $area[ 'AreaChild' ] as $areaChild )
 						if( !empty( $permissions[ $areaChild['controller'] ][ 'action' ][ $areaChild['action'] ] ) )
@@ -100,7 +117,7 @@ class FrontEndHelper extends Helper
 			}
 		}
 				
-		return $this->output( $string );
+		return $string;
 	}
 	
 	public function getSubMenu( &$submenu, &$controllerName, $actionName ){
@@ -131,8 +148,8 @@ class FrontEndHelper extends Helper
 
 	private function optionSelected( &$option ){
 		
-		if( $this->Session->check( "Menu.{$option}" ) )
-			return ' '.$this->Session->read( "Menu.{$option}" );
+		if( $this->request->session()->check( "Menu.{$option}" ) )
+			return ' '. $this->request->session()->read( "Menu.{$option}" );
 			
 		return null;
 	}

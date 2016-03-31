@@ -94,14 +94,16 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event) 
     {
-         $this->Menu->mount();
-        dump($this->request->session()->read( 'Auth.User.Menu'));
+        
+        //dump($this->request->session()->read('Auth.User.Menu'));
+        $this->Menu->mount();
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
                 $this->Users->lastLogin($this->Auth->user("id"));
-               
+                $this->Menu->mount();
+                
             }
 
             // if (!$this->Auth->user('pass_switched') && $this->action != 'manageAccount')
