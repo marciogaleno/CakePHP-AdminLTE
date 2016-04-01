@@ -1,4 +1,4 @@
-''<!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -81,4 +81,4 @@
     </div><!-- /.row (main row) -->
 
   </section><!-- /.content -->
-</div><!-- /.content-wrapper -->''
+</div><!-- /.content-wrapper -->

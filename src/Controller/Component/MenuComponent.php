@@ -39,7 +39,7 @@ class MenuComponent extends Component
 
 		$areas = $profiles->find()
 				->select('id')
-				->where(['id' =>  $this->request->session()->read('Auth.User.profile_id')])
+				->where(['id' =>  1])
 				->contain(['Areas' => function ($query) {
 
 					return 
@@ -47,14 +47,14 @@ class MenuComponent extends Component
 						 	  ->where(['Areas.appear' => 1, function ($exp, $q){
 										return $exp->isNull('Areas.parent_id');
 							  }])
-							  ->contain(['ChildAreas' => function ($query) {
+							  ->contain(['ParentAreas' => function ($query) {
 									return $query->select(['controller', 'controller_label', 'action'])
-									 			 ->where(['ChildAreas.appear' => 1]);
+									 			 ->where(['ParentAreas.appear' => 1]);
 							  }]);
 
 				}])
 				->toArray();
-		
+		dump($areas);
 		$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
 
 	}

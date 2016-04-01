@@ -35,10 +35,12 @@ class AreasTable extends Table
             'className' => 'Areas',
             'foreignKey' => 'parent_id'
         ]);
-        $this->hasMany('ChildAreas', [
+
+        $this->belongsTo('ChildAreas', [
             'className' => 'Areas',
             'foreignKey' => 'parent_id'
         ]);
+
         $this->belongsToMany('Profiles', [
             'foreignKey' => 'area_id',
             'targetForeignKey' => 'profile_id',

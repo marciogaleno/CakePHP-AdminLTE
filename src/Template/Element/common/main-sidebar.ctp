@@ -17,7 +17,7 @@
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <?= $this->FrontEnd->getMenu() ?>
-   <!--  <ul class="sidebar-menu">
+    <ul class="sidebar-menu">
       <li class="header">Menu</li>
       <li class="active treeview">
         <a href="#">
@@ -40,9 +40,9 @@
 
 
 
-      </li> -->
-<!--       <li class="header">LABELS</li>
- -->    </ul>
+      </li>
+      <!-- <li class="header">LABELS</li> -->
+    </ul>
   </section>
   <!-- /.sidebar -->
 </aside>

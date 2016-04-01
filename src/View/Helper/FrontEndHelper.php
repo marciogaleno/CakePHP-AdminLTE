@@ -76,7 +76,7 @@ class FrontEndHelper extends Helper
 		
 		dump($areas);
 		dump($permissions);
-		dump($this->request->session()->read( "Menu.Page" ) );
+		//dump($this->request->session()->read( "Menu.Page" ) );
 		foreach ($areas as $area) {
 
 			$string .= '<ul class="sidebar-menu">';
@@ -87,21 +87,23 @@ class FrontEndHelper extends Helper
 				// nao eh submenu
 				if( empty( $area[ 'child_areas' ] ) ){
 
-					$string .= '<li class="'. $this->optionSelected( $area[ 'controller' ] ) . ' treeview">';
+					$string .= '<li class="'. $this->optionSelected( $area[ 'controller_label' ] ) . ' treeview">';
 						$string .= '<a href="#">';
 						$string .= '<i class="fa fa-dashboard"></i> <span>'. $area->controller_label .'</span> <i class="fa fa-angle-left pull-right"></i>';
 						$string .= '</a>';
 
-						foreach ($area as $key => $value) {
-							# code...
-						}
 						$string .= '<ul class="treeview-menu">';
-						$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
-						$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
-						$string .= '</ul>';
+						foreach ($area as $key => $value) {
+
+							
+							$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
+							$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
+												
+						}
+						$string .= '</ul>';	
 					$string .= '</li>';
 
-				}else { // submenu
+				} else { // submenu
 
 					$string .= '<li class="dropdown">'.
 						'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $area[ 'controller_label' ] .' <b class="caret"></b></a>'.
@@ -120,30 +122,17 @@ class FrontEndHelper extends Helper
 		return $string;
 	}
 	
-	public function getSubMenu( &$submenu, &$controllerName, $actionName ){
+	public function getSubMenu( &$areas){
 		
-		if( !empty( $submenu ) ){
-		
-			$string			= "";
-			$permissions	= $this->Session->read( "Auth.User.Profile" );
-			
-			if( !empty( $permissions[ $controllerName ] ) ){
-		
-				foreach( $submenu as $action ){
-					
-					if( array_key_exists( $action, $permissions[ $controllerName ][ 'action' ] ) ){
+		$string .= '<ul class="treeview-menu">';
 
-						$action == $actionName ? $active = ' class="active"' : $active = null;
-						empty( $this->iconClasses[ $action ] ) ? $icon = null : $icon = "<i class=\"{$this->iconClasses[$action]}\"></i> ";
-						$string .= "<li{$active}>". $this->Html->link( $icon . $permissions[ $controllerName ][ 'actions_labels' ][ $action ], "/{$controllerName}/{$action}", array( 'class' => "icon {$action}", 'escape' => false ) ) ."</li>\n";
-					}
-				}
-			}
-		
-			return '<ul id="submenu" class="nav nav-tabs">'. $string .'</ul>';
-			
-		} else
-			return null;
+		foreach ($area as $key => $value) {
+			$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
+			$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
+												
+		}
+
+		$string .= '</ul>';
 	}
 
 	private function optionSelected( &$option ){

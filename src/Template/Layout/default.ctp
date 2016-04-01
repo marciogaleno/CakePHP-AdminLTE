@@ -40,8 +40,9 @@
     <link rel="stylesheet" href="<?= $this->request->webroot . 'adminlte/plugins/daterangepicker/daterangepicker-bs3.css' ?>"/>
     <link rel="stylesheet" href="<?= $this->request->webroot . 'adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' ?>"/>
 </head>
-  <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+<body class="sidebar-mini skin-green wysihtml5-supported">
+<!--  <body class="sidebar-mini skin-green-light wysihtml5-supported">
+ -->    <div class="wrapper">
 
         <?= $this->element('common/header');?>
         <?= $this->element('common/main-sidebar');?>

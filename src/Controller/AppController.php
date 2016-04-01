@@ -96,13 +96,14 @@ class AppController extends Controller
     {
         
         //dump($this->request->session()->read('Auth.User.Menu'));
-        $this->Menu->mount();
+       $this->Menu->mount();
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
                 $this->Users->lastLogin($this->Auth->user("id"));
-                $this->Menu->mount();
+                
+                //$this->Menu->mount();
                 
             }
 
