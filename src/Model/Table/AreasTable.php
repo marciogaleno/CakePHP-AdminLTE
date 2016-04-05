@@ -31,12 +31,8 @@ class AreasTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('ParentAreas', [
-            'className' => 'Areas',
-            'foreignKey' => 'parent_id'
-        ]);
 
-        $this->belongsTo('ChildAreas', [
+        $this->hasMany('ChildAreas', [
             'className' => 'Areas',
             'foreignKey' => 'parent_id'
         ]);
