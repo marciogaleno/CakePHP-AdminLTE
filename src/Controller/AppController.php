@@ -84,6 +84,7 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {   
         $this->set('title_for_layout', $this->title_for_layout);
+        $this->Session->write('Menu.selected', $this->name);
 
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
@@ -94,17 +95,13 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event) 
     {
-        
-        //dump($this->request->session()->read('Auth.User.Menu'));
-       $this->Menu->mount();
+
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
                 $this->Users->lastLogin($this->Auth->user("id"));
-                
-                //$this->Menu->mount();
-                
+                $this->Menu->mount();              
             }
 
             // if (!$this->Auth->user('pass_switched') && $this->action != 'manageAccount')

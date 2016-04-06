@@ -11,7 +11,7 @@ class FrontEndHelper extends Helper
 	 * Atributtes
 	 ----------------------------------------*/
 	
-	public $helpers = array( 'Html', 'Session', 'Time' );
+	public $helpers = array( 'Html', 'Session', 'Time', 'Url' );
 
 	private $months = array( 1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril', 5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto', 9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro' );
 
@@ -24,7 +24,8 @@ class FrontEndHelper extends Helper
 	 * Methods
 	 ----------------------------------------*/
 
-	public function message(){
+	public function message()
+	{
 	
 		$flash = $this->Session->check( "Message.flash" ) ? $this->Session->read( "Message.flash" ) : $this->Session->read( "Message.auth" );
 
@@ -40,7 +41,8 @@ class FrontEndHelper extends Helper
 		return null;
 	}
 
-	public function niceDate( &$date, $verbose = false ){
+	public function niceDate( &$date, $verbose = false )
+	{
 
 		if( $verbose )
 			return '<i class="icon-calendar"></i> '. $this->Time->format( "d", $date ) .' de '. $this->months[$this->Time->format( "n", $date )] .' de '. $this->Time->format( "Y", $date ) .' <i class="icon-time"></i> '. $this->Time->format( "H:i:s", $date );
@@ -48,7 +50,8 @@ class FrontEndHelper extends Helper
 		return '<i class="icon-calendar"></i> '. $this->Time->format( "d/m/Y", $date ) .' <i class="icon-time"></i> '. $this->Time->format( "H:i:s", $date );
 	}
 
-	public function getHeader( &$controller, $action, $subtitle = null ){
+	public function getHeader( &$controller, $action, $subtitle = null )
+	{
 		
 		if( !$this->Session->check( "Auth.User.Profile" ) )
 			return $this->output( "" );
@@ -68,53 +71,52 @@ class FrontEndHelper extends Helper
 			return null;
 	}
 
-	public function getMenu(){
+	public function getMenu()
+	{
 		
 		$string = '';
 		$areas = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
-		
-		dump($areas);
-		dump($permissions);
+
+		$string .= '<ul class="sidebar-menu">';
+		$string .= '<li class="header">Menu</li>';
+
 		//dump($this->request->session()->read( "Menu.Page" ) );
 		foreach ($areas as $area) {
-
-			$string .= '<ul class="sidebar-menu">';
-			$string .= '<li class="header">Menu</li>';
 			// se tiver permissao para controller/action
 			if( !empty( $permissions[ $area->controller][ 'action' ][ $area->action ] ) ){
 
-				// nao eh submenu
-				if( empty( $area[ 'child_areas' ] ) ){
+				
+				if( !empty( $area[ 'child_areas' ] ) ){
 
-					$string .= '<li class="'. $this->optionSelected( $area[ 'controller_label' ] ) . ' treeview">';
+					$string .= '<li class="'. $this->selected( $area[ 'controller' ] ) . ' treeview">';
 						$string .= '<a href="#">';
-						$string .= '<i class="fa fa-dashboard"></i> <span>'. $area->controller_label .'</span> <i class="fa fa-angle-left pull-right"></i>';
+						$string .= '<i class="fa fa-dashboard"></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
 						$string .= '</a>';
 
 						$string .= '<ul class="treeview-menu">';
-						foreach ($area as $key => $value) {
 
 							
-							$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
-							$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
-												
+						$string .= '<li class="active">' .
+									    '<a href="' .  $this->Url->build(['controller' => $area->controller, 'action' => $area->action]) . '">
+									   		 <i class="fa fa-circle-o"></i>' . $area->controller_label . 
+									    '</a>
+									</li>';
+
+						foreach ($area->child_areas as $child_area) {
+							
+							$string .= '<li class="active">
+											<a href="' . $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-circle-o"></i>' 
+												. $child_area->controller_label . 
+											'</a>
+										</li>';							
 						}
+
 						$string .= '</ul>';	
 					$string .= '</li>';
 
-				} else { // submenu
-
-					$string .= '<li class="dropdown">'.
-						'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $area[ 'controller_label' ] .' <b class="caret"></b></a>'.
-					    '<ul class="dropdown-menu">'.
-					    '<li class="'.$this->optionSelected( $area->controller ).'">'.$this->Html->link( $area[ 'controller_label' ], "/{$area['controller']}/{$area['action']}", array( 'escape' => false ) )."</li>\n";
-					
-					foreach( $area[ 'AreaChild' ] as $areaChild )
-						if( !empty( $permissions[ $areaChild['controller'] ][ 'action' ][ $areaChild['action'] ] ) )
-							$string .= '<li class="divider"></li><li class="'.$this->optionSelected( $areaChild[ 'controller' ] ).'">'.$this->Html->link( $areaChild[ 'controller_label' ], "/{$areaChild['controller']}/{$areaChild['action']}", array( 'escape' => false ) )."</li>\n";
-
-					$string .= '</ul></li>';
+				} else {					
+					$string .= '<li><a href="'. $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-th"></i> <span>' . $area->controller_label . '</span></a></li>';
 				}
 			}
 		}
@@ -122,23 +124,17 @@ class FrontEndHelper extends Helper
 		return $string;
 	}
 	
-	public function getSubMenu( &$areas){
-		
-		$string .= '<ul class="treeview-menu">';
 
-		foreach ($area as $key => $value) {
-			$string .= '<li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>';
-			$string .= '<li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>';
-												
+	private function selected( $name_selected )
+	{
+		
+		if( $this->request->session()->check( "Menu.selected" ) ){
+			dump($this->request->session()->read('Menu.selected')); 
+			dump($name_selected);
+			if ($this->request->session()->read('Menu.selected') === $name_selected){
+				return 'active';
+			}
 		}
-
-		$string .= '</ul>';
-	}
-
-	private function optionSelected( &$option ){
-		
-		if( $this->request->session()->check( "Menu.{$option}" ) )
-			return ' '. $this->request->session()->read( "Menu.{$option}" );
 			
 		return null;
 	}

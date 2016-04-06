@@ -37,14 +37,15 @@ class MenuComponent extends Component
 
 		$profiles = TableRegistry::get('Profiles');
 
-		dump($this->request->session()->read('Auth.User.profile_id'));
 		$areas = $profiles->find()
 				->select('id')
 				->where(['id' =>  $this->request->session()->read('Auth.User.profile_id')])
 				->contain([
 					'Areas' => function ($query){
-						return $query->where(['Areas.appear' => '1'])
-									 ->select(['Areas.controller', 'Areas.controller_label', 'Areas.id', 'Areas.parent_id'])
+                        return $query->where(['Areas.appear' => '1', function ($exp, $q) {
+                                            return $exp->isNull('parent_id');
+                                     }])
+									 ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.parent_id'])
 									 ->contain([
 									 	'ChildAreas' => function ($q) {
 									 		return $q->where(['appear' => '1'])
@@ -55,8 +56,7 @@ class MenuComponent extends Component
 				])
 				->toArray();
 
-		dump($areas);
-		//$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
+		$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
 
 	}
 }

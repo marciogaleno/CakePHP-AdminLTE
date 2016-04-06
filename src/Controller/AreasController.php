@@ -20,7 +20,7 @@ class AreasController extends AppController
     {   
         
         $this->paginate = [
-            'contain' => ['ParentAreas']
+            'contain' => ['ChildAreas']
         ];
         $areas = $this->paginate($this->Areas);
 
