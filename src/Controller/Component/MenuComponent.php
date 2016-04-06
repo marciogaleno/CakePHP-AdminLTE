@@ -44,10 +44,12 @@ class MenuComponent extends Component
 				->contain([
 					'Areas' => function ($query){
 						return $query->where(['Areas.appear' => '1'])
+									 ->select(['Areas.controller', 'Areas.controller_label', 'Areas.id', 'Areas.parent_id'])
 									 ->contain([
 									 	'ChildAreas' => function ($q) {
 									 		return $q->where(['appear' => '1'])
-									 				 ->select(['controller', 'controller_label']);
+									 		         ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id']);
+									 				 
 									 }]);
 					}
 				])
