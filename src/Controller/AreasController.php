@@ -11,6 +11,9 @@ use App\Controller\AppController;
 class AreasController extends AppController
 {
 
+    public $setMenuParent = 'Areas';
+
+    public $setGroupMenu = 'Configurações';
     /**
      * Index method
      *
@@ -38,7 +41,7 @@ class AreasController extends AppController
     public function view($id = null)
     {
         $area = $this->Areas->get($id, [
-            'contain' => ['ParentAreas', 'Profiles', 'ChildAreas']
+            'contain' => ['Profiles', 'ChildAreas']
         ]);
 
         $this->set('area', $area);

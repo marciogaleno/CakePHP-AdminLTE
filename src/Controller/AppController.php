@@ -84,7 +84,9 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {   
         $this->set('title_for_layout', $this->title_for_layout);
-        $this->Session->write('Menu.selected', $this->name);
+
+        $this->Session->write('Menu.selected', $this->setMenuParent);
+        $this->Session->write('Menu.menu_group_selected', $this->setGroupMenu);
 
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
@@ -96,6 +98,8 @@ class AppController extends Controller
     public function beforeFilter(Event $event) 
     {
 
+        dump($this->Profiles->getAreas($this->Auth->user("profile_id")));
+        
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
@@ -141,5 +145,7 @@ class AppController extends Controller
             $this->redirect("/");
         }
     }
+
+
 
 }

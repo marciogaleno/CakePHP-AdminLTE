@@ -74,8 +74,22 @@ class ProfilesTable extends Table
             ->where(['id' => $profile_id])
             ->contain(['Areas' => function ($q) {
                 return $q->order(['controller_label' => 'ASC']);
-            }
-        ])->toArray();
+            }])
+            ->toArray();
+
+        $group_menu = $this->find()
+                ->select(['id'])
+                ->where(['id' => $profile_id])
+                ->contain(['Areas' => function ($q) {
+                    return $q->order(['controller_label' => 'ASC'])
+                             ->select(['id', 'name_group_menu'])
+                             ->where(['is_group_menu' => '1']);
+                }])
+                ->toArray();
+
+        dump($profile);
+        dump($group_menu[0]->areas);
+        $teste = $group_menu[0]->areas;
 
         $areas = array();
 
@@ -85,6 +99,13 @@ class ProfilesTable extends Table
 
             $areas[$area->controller]['action'][$area->action] = $area->appear;
             $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
+
+            //Colocando informaçõa de que grupo de menu é essa área
+            foreach ($teste as $key => $value) {
+                dump($value);
+            }
+          
+
         }
         
         return $areas;

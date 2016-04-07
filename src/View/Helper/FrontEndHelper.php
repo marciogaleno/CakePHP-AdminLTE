@@ -16,8 +16,7 @@ class FrontEndHelper extends Helper
 	private $months = array( 1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril', 5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto', 9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro' );
 
 	private $iconClasses = array(
-		'index' => 'icon-th-list',
-		'add' => 'icon-plus',
+		'config' => 'fa-cog'
 	);
 
 	/*----------------------------------------
@@ -50,6 +49,27 @@ class FrontEndHelper extends Helper
 		return '<i class="icon-calendar"></i> '. $this->Time->format( "d/m/Y", $date ) .' <i class="icon-time"></i> '. $this->Time->format( "H:i:s", $date );
 	}
 
+	public function getNavegation()
+	{	
+		$name_grou_menu = $this->request->session()->read('Menu.menu_group_selected');
+		$controller_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.controller_label" );
+		$action_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.actions_labels.{$this->request->param('action')}" );
+
+		$string = '';
+
+		$string .= '<ol class="breadcrumb">';
+
+			$string .= '<li><i class=""></i>'. $name_grou_menu . '</li>';
+
+			$string .= '<li><a href="'. $this->Url->build("/{$this->request->param('controller')}") . '">'. $controller_label .'</a></li>';
+
+			$string .= '<li>' . $action_label .'</li>';
+
+		$string .= '</ol>';
+
+		return $string;
+	}
+
 	public function getHeader( &$controller, $action, $subtitle = null )
 	{
 		
@@ -71,12 +91,14 @@ class FrontEndHelper extends Helper
 			return null;
 	}
 
+
 	public function getMenu()
 	{
 		
 		$string = '';
 		$areas = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
+		dump($permissions);
 
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';
@@ -88,10 +110,9 @@ class FrontEndHelper extends Helper
 
 				
 				if( !empty( $area[ 'child_areas' ] ) ){
-
-					$string .= '<li class="'. $this->selected( $area[ 'controller' ] ) . ' treeview">';
+					$string .= '<li class="'. $this->selected( $area->controller) . ' treeview">';
 						$string .= '<a href="#">';
-						$string .= '<i class="fa fa-dashboard"></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
+						$string .= '<i class=" fa '. ( !empty($area->icon_group_menu) ?  $area->icon_group_menu: 'fa-dashboard') . ' "></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
 						$string .= '</a>';
 
 						$string .= '<ul class="treeview-menu">';
@@ -129,8 +150,6 @@ class FrontEndHelper extends Helper
 	{
 		
 		if( $this->request->session()->check( "Menu.selected" ) ){
-			dump($this->request->session()->read('Menu.selected')); 
-			dump($name_selected);
 			if ($this->request->session()->read('Menu.selected') === $name_selected){
 				return 'active';
 			}

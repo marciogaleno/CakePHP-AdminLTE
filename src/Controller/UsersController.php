@@ -11,6 +11,9 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+    public $setMenuParent = 'Areas';
+    
+    public $setGroupMenu = 'Configurações';
     /**
      * Index method
      *
