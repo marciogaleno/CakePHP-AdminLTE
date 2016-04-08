@@ -69,44 +69,62 @@ class ProfilesTable extends Table
 
     public function getAreas($profile_id) {
         
-        $profile = $this->find()
-            ->select(['id'])
-            ->where(['id' => $profile_id])
-            ->contain(['Areas' => function ($q) {
-                return $q->order(['controller_label' => 'ASC']);
-            }])
-            ->toArray();
+        // $profile = $this->find()
+        //     ->select(['id'])
+        //     ->where(['id' => $profile_id])
+        //     ->contain(['Areas' => function ($q) {
+        //         return $q->order(['controller_label' => 'ASC']);
+        //     }])
+        //     ->toArray();
 
-        $group_menu = $this->find()
-                ->select(['id'])
-                ->where(['id' => $profile_id])
-                ->contain(['Areas' => function ($q) {
-                    return $q->order(['controller_label' => 'ASC'])
-                             ->select(['id', 'name_group_menu'])
-                             ->where(['is_group_menu' => '1']);
-                }])
+        $profile = $this->find()
+                ->select('id')
+                ->where(['id' =>  $profile_id])
+                ->contain([
+                    'Areas' => function ($query){
+                        return $query->where(['Areas.appear' => '1', function ($exp, $q) {
+                                            return $exp->isNull('parent_id');
+                                     }])
+                                     ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.parent_id'])
+                                     ->contain([
+                                        'ChildAreas' => function ($q) {
+                                            return $q->where(['appear' => '1'])
+                                                     ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id']);
+                                                     
+                                     }]);
+                    }
+                ])
                 ->toArray();
 
-        dump($profile);
-        dump($group_menu[0]->areas);
-        $teste = $group_menu[0]->areas;
+        //dump($profile[0]->areas);
 
         $areas = array();
 
-        foreach ($profile[0]->areas as $area) {
-            if (!isset($areas[$area->controller]))
-                $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
+        foreach ($profile[0]->areas as $parent_area) {
 
-            $areas[$area->controller]['action'][$area->action] = $area->appear;
-            $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
+            $name_group_menu = $parent_area->name_group_menu;
+            $menu_parent = $parent_area->controller;
+            
 
-            //Colocando informaçõa de que grupo de menu é essa área
-            foreach ($teste as $key => $value) {
-                dump($value);
+            $areas[$parent_area->controller]['action'][$parent_area->action] = $parent_area->appear;
+            $areas[$parent_area->controller]['actions_labels'][$parent_area->action] = $parent_area->action_label;
+            $areas[$parent_area->controller]['name_group_menu'] = $name_group_menu;
+            $areas[$parent_area->controller]['parent_menu'] = $menu_parent;
+
+            foreach ($parent_area->child_areas as $area) {
+
+                if (!isset($areas[$area->controller]))
+                    $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
+
+                $areas[$area->controller]['action'][$area->action] = $area->appear;
+                $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
+                $areas[$area->controller]['controller'] = $area->controller;
+                $areas[$area->controller]['name_group_menu'] = $name_group_menu;
+                $areas[$area->controller]['parent_menu'] = $menu_parent;
             }
-          
 
         }
+        dump($areas);
         
         return $areas;
     }

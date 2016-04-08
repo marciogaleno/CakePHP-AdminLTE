@@ -98,7 +98,7 @@ class FrontEndHelper extends Helper
 		$string = '';
 		$areas = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
-		dump($permissions);
+		//dump($permissions);
 
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';

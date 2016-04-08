@@ -98,8 +98,9 @@ class AppController extends Controller
     public function beforeFilter(Event $event) 
     {
 
-        dump($this->Profiles->getAreas($this->Auth->user("profile_id")));
-        
+        //dump($this->request->session()->read( 'Auth.User.Profile'));
+        $this->Profiles->getAreas($this->Auth->user("profile_id"));
+
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
