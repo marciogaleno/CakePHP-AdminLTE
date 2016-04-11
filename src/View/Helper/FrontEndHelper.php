@@ -23,23 +23,6 @@ class FrontEndHelper extends Helper
 	 * Methods
 	 ----------------------------------------*/
 
-	public function message()
-	{
-	
-		$flash = $this->Session->check( "Message.flash" ) ? $this->Session->read( "Message.flash" ) : $this->Session->read( "Message.auth" );
-
-		if( $flash ){
-
-			$class = empty( $flash[ 'params' ][ 'class' ] ) ? null : ' alert-'.$flash[ 'params' ][ 'class' ];
-			$button = empty( $flash[ 'params' ][ 'button' ] ) ? null : $this->Html->link( $flash[ 'params' ][ 'button' ][ 'label' ], $flash[ 'params' ][ 'button' ][ 'url' ], array( 'class' => 'btn btn-mini' ) );
-			$message = $this->Session->check( "Message.flash" ) ? $this->Session->flash() : $this->Session->flash('auth');
-
-			return '<div class="alert'.$class.'"><a class="close" data-dismiss="alert">×</a>'.$message.$button.'</div>';
-		}
-
-		return null;
-	}
-
 	public function niceDate( &$date, $verbose = false )
 	{
 
@@ -51,7 +34,8 @@ class FrontEndHelper extends Helper
 
 	public function getNavegation()
 	{	
-		$name_grou_menu = $this->request->session()->read('Menu.menu_group_selected');
+		$name_grou_menu = $this->request->session()->read('Menu.name_group_menu_selected');
+		$icon_group_menu = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.icon_group_menu" );
 		$controller_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.controller_label" );
 		$action_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.actions_labels.{$this->request->param('action')}" );
 
@@ -59,7 +43,7 @@ class FrontEndHelper extends Helper
 
 		$string .= '<ol class="breadcrumb">';
 
-			$string .= '<li><i class=""></i>'. $name_grou_menu . '</li>';
+			$string .= '<li><i class="fa '. $icon_group_menu .'"></i> &nbsp;'. $name_grou_menu . '</li>';
 
 			$string .= '<li><a href="'. $this->Url->build("/{$this->request->param('controller')}") . '">'. $controller_label .'</a></li>';
 
@@ -98,19 +82,16 @@ class FrontEndHelper extends Helper
 		$string = '';
 		$areas = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
-		//dump($permissions);
 
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';
 
-		//dump($this->request->session()->read( "Menu.Page" ) );
 		foreach ($areas as $area) {
 			// se tiver permissao para controller/action
 			if( !empty( $permissions[ $area->controller][ 'action' ][ $area->action ] ) ){
-
-				
+		
 				if( !empty( $area[ 'child_areas' ] ) ){
-					$string .= '<li class="'. $this->selected( $area->controller) . ' treeview">';
+					$string .= '<li class="'. $this->selected( $area->controller ) . ' treeview">';
 						$string .= '<a href="#">';
 						$string .= '<i class=" fa '. ( !empty($area->icon_group_menu) ?  $area->icon_group_menu: 'fa-dashboard') . ' "></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
 						$string .= '</a>';

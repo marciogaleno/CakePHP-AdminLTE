@@ -11,9 +11,6 @@ use App\Controller\AppController;
 class AreasController extends AppController
 {
 
-    public $setMenuParent = 'Areas';
-
-    public $setGroupMenu = 'Configurações';
     /**
      * Index method
      *
@@ -21,7 +18,8 @@ class AreasController extends AppController
      */
     public function index()
     {   
-        
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $this->paginate = [
             'contain' => ['ChildAreas']
         ];
@@ -39,7 +37,7 @@ class AreasController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
-    {
+    {   
         $area = $this->Areas->get($id, [
             'contain' => ['Profiles', 'ChildAreas']
         ]);
@@ -59,7 +57,7 @@ class AreasController extends AppController
         if ($this->request->is('post')) {
             $area = $this->Areas->patchEntity($area, $this->request->data);
             if ($this->Areas->save($area)) {
-                $this->Flash->success(__('The area has been saved.'));
+                $this->Flash->set(null,['params' => ['class' => 'success']]);
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The area could not be saved. Please, try again.'));

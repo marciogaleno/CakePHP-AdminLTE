@@ -30,6 +30,8 @@ class AppController extends Controller
 
     public $Session;
 
+    public $controllerLabel;
+
     private $title_for_layout;
     /**
      * Initialization hook method.
@@ -72,6 +74,7 @@ class AppController extends Controller
         $this->Auth->allow(['add', 'edit', 'index']);
 
         $this->title_for_layout = 'Cordel';
+        $this->controllerLabel = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.controller_label");
 
     }
 
@@ -84,9 +87,13 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {   
         $this->set('title_for_layout', $this->title_for_layout);
+        $this->set('controller_label', $this->controllerLabel);
 
-        $this->Session->write('Menu.selected', $this->setMenuParent);
-        $this->Session->write('Menu.menu_group_selected', $this->setGroupMenu);
+        $menu_parent = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.parent_menu");
+        $name_group_menu_selected = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.name_group_menu");
+
+        $this->Session->write('Menu.selected', $menu_parent);
+        $this->Session->write('Menu.name_group_menu_selected', $name_group_menu_selected);
 
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
@@ -97,10 +104,6 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event) 
     {
-
-        //dump($this->request->session()->read( 'Auth.User.Profile'));
-        $this->Profiles->getAreas($this->Auth->user("profile_id"));
-
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
@@ -120,7 +123,7 @@ class AppController extends Controller
     }
 
     protected function checkAccess($controller = null, $action = null) 
-    {
+    {   
 
         if ($controller == null || $action == null) {
 
@@ -141,7 +144,7 @@ class AppController extends Controller
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}.action.{$action}")) {
-
+            dump($controller);
             $this->Session->setFlash("Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).", "default", array('class' => 'error'));
             $this->redirect("/");
         }

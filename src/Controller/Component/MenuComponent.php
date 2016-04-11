@@ -36,7 +36,7 @@ class MenuComponent extends Component
 	{	
 
 		$profiles = TableRegistry::get('Profiles');
-
+		
 		$areas = $profiles->find()
 				->select('id')
 				->where(['id' =>  $this->request->session()->read('Auth.User.profile_id')])

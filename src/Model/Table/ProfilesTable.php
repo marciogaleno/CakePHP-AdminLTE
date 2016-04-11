@@ -85,11 +85,11 @@ class ProfilesTable extends Table
                         return $query->where(['Areas.appear' => '1', function ($exp, $q) {
                                             return $exp->isNull('parent_id');
                                      }])
-                                     ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.parent_id'])
+                                     ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon_group_menu', 'Areas.appear'])
                                      ->contain([
                                         'ChildAreas' => function ($q) {
                                             return $q->where(['appear' => '1'])
-                                                     ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id']);
+                                                     ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear']);
                                                      
                                      }]);
                     }
@@ -104,12 +104,15 @@ class ProfilesTable extends Table
 
             $name_group_menu = $parent_area->name_group_menu;
             $menu_parent = $parent_area->controller;
+            $icon_group_menu = $parent_area->icon_group_menu;
             
 
+            $areas[$parent_area->controller]['controller_label'] = $parent_area->controller_label;
             $areas[$parent_area->controller]['action'][$parent_area->action] = $parent_area->appear;
             $areas[$parent_area->controller]['actions_labels'][$parent_area->action] = $parent_area->action_label;
             $areas[$parent_area->controller]['name_group_menu'] = $name_group_menu;
             $areas[$parent_area->controller]['parent_menu'] = $menu_parent;
+            $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
 
             foreach ($parent_area->child_areas as $area) {
 
@@ -121,11 +124,12 @@ class ProfilesTable extends Table
                 $areas[$area->controller]['controller'] = $area->controller;
                 $areas[$area->controller]['name_group_menu'] = $name_group_menu;
                 $areas[$area->controller]['parent_menu'] = $menu_parent;
+                $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
+
             }
 
-        }
-        dump($areas);
-        
+        } 
+
         return $areas;
     }
 }

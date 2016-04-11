@@ -3,8 +3,11 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Dashboard
-      <small>Control panel</small>
+      <?php if ($this->name == 'Pages') {?>
+          <?= 'Painel de Controle' ?>
+      <?php } else {?>
+          <?=  $this->request->session()->read("Auth.User.Profile.{$this->request->param('controller')}.controller_label") ?>
+      <?php }?>
     </h1>
 
     <?= $this->FrontEnd->getNavegation()?>
@@ -12,6 +15,8 @@
 
   <!-- Main content -->
   <section class="content">
+
+     <?= $this->Flash->render()?>
     <!-- Small boxes (Stat box) -->
     <div class="row">
 

@@ -20,7 +20,8 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|null
      */
     public function index()
-    {
+    {   
+        $this->checkAccess($this->name, __FUNCTION__);
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
