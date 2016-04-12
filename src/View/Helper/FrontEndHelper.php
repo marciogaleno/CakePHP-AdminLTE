@@ -122,7 +122,9 @@ class FrontEndHelper extends Helper
 				}
 			}
 		}
-				
+		
+		$string .= '</ul>'
+
 		return $string;
 	}
 	
