@@ -24,11 +24,11 @@
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b><?= $title_for_layout?></a>
+        <a href="<?= $this->Url->build('/users/login')?>"><b><?= $title_for_layout?></a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
       <br>
-
+        <?= $this->Flash->render()?>
         <?= $this->fetch('content') ?>
 
 

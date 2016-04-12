@@ -119,13 +119,13 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error('Your username or password is incorrect.');
+            $this->Flash->set('Seu usuário ou senha está incorreta', ['params' => ['class' => 'error']]);
         }
     }
 
     public function logout()
     {
-        $this->Flash->success('You are now logged out.');
+        //$this->Flash->success('You are now logged out.');
         return $this->redirect($this->Auth->logout());
     }
 }
