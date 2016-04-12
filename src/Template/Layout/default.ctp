@@ -97,9 +97,38 @@
     <script src="<?= $this->request->webroot . 'adminlte/dist/js/app.min.js' ?>"></script>
 
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="<?= $this->request->webroot . 'adminlte/dist/js/pages/dashboard.js' ?>"></script>
-
+<!--     <script src="<?= $this->request->webroot . 'adminlte/dist/js/pages/dashboard.js' ?>"></script>
+ -->
     <!-- AdminLTE for demo purposes -->
     <script src="<?= $this->request->webroot . 'adminlte/dist/js/demo.js' ?>"></script>
+
+    <script src="<?= $this->request->webroot . 'adminlte/plugins/iCheck/icheck.min.js' ?>"></script>
+
+<script>
+      $(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+          checkboxClass: 'icheckbox_flat-blue',
+          radioClass: 'iradio_flat-blue'
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+          var clicks = $(this).data('clicks');
+          if (clicks) {
+            //Uncheck all checkboxes
+            $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+            $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+          } else {
+            //Check all checkboxes
+            $(".mailbox-messages input[type='checkbox']").iCheck("check");
+            $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+          }
+          $(this).data("clicks", !clicks);
+        });
+        
+      });
+</script>
   </body>
 </html>

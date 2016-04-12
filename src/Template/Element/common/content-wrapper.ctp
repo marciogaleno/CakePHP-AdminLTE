@@ -17,6 +17,7 @@
   <section class="content">
 
      <?= $this->Flash->render()?>
+     <?= $this->fetch('content') ?>
     <!-- Small boxes (Stat box) -->
     <div class="row">
 

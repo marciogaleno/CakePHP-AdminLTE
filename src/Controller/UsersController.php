@@ -22,6 +22,12 @@ class UsersController extends AppController
     public function index()
     {   
         $this->checkAccess($this->name, __FUNCTION__);
+
+        $this->paginate = [
+            'limit' => 1,
+            'contain' => ['Profiles']
+        ];
+
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));

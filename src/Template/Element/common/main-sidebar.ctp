@@ -17,7 +17,7 @@
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <?= $this->FrontEnd->getMenu() ?>
-
+    
   </section>
   <!-- /.sidebar -->
 </aside>
