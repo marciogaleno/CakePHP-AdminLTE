@@ -127,25 +127,25 @@ class AppController extends Controller
 
         if ($controller == null || $action == null) {
 
-            $this->Session->setFlash("Ocorreu um erro de permiss&otilde;es. (erro: falta de parametros)", "default", array('class' => 'error'));
+            $this->Flash->set("Ocorreu um erro de permiss&otilde;es. (erro: falta de parametros)",['params' => ['class' => 'error']]);
             $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User")) {
 
-            $this->Session->setFlash("Por favor, efetue login para ter acesso a esta &aacute;rea.", "default", array('class' => 'error'));
-            $this->redirect("/");
+            $this->Flash->set('Por favor, efetue login para ter acesso a esta &aacute;rea.',['params' => ['class' => 'error']]);
+            $this->redirect($this->referer());
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}")) {
 
-            $this->Session->setFlash("Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$this->label}).", "default", array('class' => 'error'));
+            $this->Flash->set("Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$this->label}).",['params' => ['class' => 'error']]);
             $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}.action.{$action}")) {
-            dump($controller);
-            $this->Session->setFlash("Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).", "default", array('class' => 'error'));
+
+            $this->Flash->set("Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).",['params' => ['class' => 'error']]);
             $this->redirect("/");
         }
     }

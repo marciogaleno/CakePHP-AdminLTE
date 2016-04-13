@@ -6,7 +6,6 @@
           <div class="box-body no-padding">
             <div class="mailbox-controls">
               <!-- Check all button -->
-              <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
               <div class="btn-group">
                 <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
 
@@ -17,7 +16,7 @@
               <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                      <th>#</th>
+                      <th> <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button></th>
                       <th>Nome</th>
                       <th>E-mail</th>
                       <th>Perfil</th>
@@ -33,8 +32,8 @@
                         <td><?= $user->email?></td>
                         <td><?= $user->profile->name?></td>
                         <td>
-                          <button class="btn btn-primary btn-sm"><i class="fa  fa-edit "></i> Editar</button>
-                          <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
+                          <a href="" class="btn btn-primary btn-sm"><i class="fa  fa-edit "></i> Editar</a>
+                          <a href="" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</a>
                         </td>
                       </tr>
                   <?php endforeach;?>
@@ -46,13 +45,6 @@
           <div class="box-footer no-padding">
             <div class="mailbox-controls">
               <!-- Check all button -->
-              <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-              <div class="btn-group">
-                <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-              </div><!-- /.btn-group -->
-              <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
               <div class="pull-right">
                 <?= $this->element('pagination');?>               
               </div><!-- /.pull-right -->
