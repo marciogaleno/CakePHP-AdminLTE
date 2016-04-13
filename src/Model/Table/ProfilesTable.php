@@ -62,34 +62,25 @@ class ProfilesTable extends Table
         return $validator;
     }
 
-    public static function isAdmin($profile_id) {
+    public static function isAdmin($profile_id) 
+    {
 
         return $profile_id == Configure::read('AdminProfileId');
     }
 
-    public function getAreas($profile_id) {
+    public function getAreas($profile_id) 
+    {
         
-        // $profile = $this->find()
-        //     ->select(['id'])
-        //     ->where(['id' => $profile_id])
-        //     ->contain(['Areas' => function ($q) {
-        //         return $q->order(['controller_label' => 'ASC']);
-        //     }])
-        //     ->toArray();
-
         $profile = $this->find()
                 ->select('id')
                 ->where(['id' =>  $profile_id])
                 ->contain([
                     'Areas' => function ($query){
-                        return $query->where(['Areas.appear' => '1', function ($exp, $q) {
-                                            return $exp->isNull('parent_id');
-                                     }])
-                                     ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon_group_menu', 'Areas.appear'])
+                        return $query->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon_group_menu', 'Areas.appear'])
                                      ->contain([
                                         'ChildAreas' => function ($q) {
-                                            return $q->where(['appear' => '1'])
-                                                     ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear']);
+                                            return $q->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear'])
+                                                     ->order(['controller_label' => 'ASC']);
                                                      
                                      }]);
                     }

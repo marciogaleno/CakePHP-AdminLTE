@@ -6,10 +6,13 @@
           <div class="box-body no-padding">
             <div class="mailbox-controls">
               <!-- Check all button -->
-              <div class="btn-group">
-                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
+              <?= $this->element('buttonsCrud', [
+                            'actions' => ['delete' => '', 'add' => ''], 
+                            'class_icons' => ['add' => ''], 
+                            'class_buttons' => ['add' => '']]
+              );?>
 
-              </div><!-- /.btn-group -->
+                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
               <button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
             </div>
             <div class="table-responsive mailbox-messages">
@@ -32,7 +35,7 @@
                         <td><?= $user->email?></td>
                         <td><?= $user->profile->name?></td>
                         <td>
-                          <a href="" class="btn btn-primary btn-sm"><i class="fa  fa-edit "></i> Editar</a>
+                          <a href="" class="btn btn-primary btn-sm"><i class="fa  fa-edit"></i> Editar</a>
                           <a href="" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</a>
                         </td>
                       </tr>
