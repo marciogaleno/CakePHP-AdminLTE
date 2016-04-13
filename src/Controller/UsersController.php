@@ -24,7 +24,7 @@ class UsersController extends AppController
         $this->checkAccess($this->name, __FUNCTION__);
 
         $this->paginate = [
-            'limit' => 1,
+            'limit' => 15,
             'contain' => ['Profiles']
         ];
 

@@ -11,7 +11,7 @@
                 <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
 
               </div><!-- /.btn-group -->
-              <button class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
+              <button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Adicionar</button>
             </div>
             <div class="table-responsive mailbox-messages">
               <table class="table table-bordered table-striped">
@@ -33,7 +33,7 @@
                         <td><?= $user->email?></td>
                         <td><?= $user->profile->name?></td>
                         <td>
-                          <button class="btn btn-default btn-sm"><i class="fa  fa-edit "></i> Editar</button>
+                          <button class="btn btn-primary btn-sm"><i class="fa  fa-edit "></i> Editar</button>
                           <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Excluir</button>
                         </td>
                       </tr>
