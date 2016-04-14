@@ -87,16 +87,14 @@ class ProfilesTable extends Table
                 ])
                 ->toArray();
 
-        //dump($profile[0]->areas);
-
         $areas = array();
 
-        foreach ($profile[0]->areas as $parent_area) {
 
+        foreach ($profile[0]->areas as $parent_area) {
+            
             $name_group_menu = $parent_area->name_group_menu;
             $menu_parent = $parent_area->controller;
-            $icon_group_menu = $parent_area->icon_group_menu;
-            
+            $icon_group_menu = $parent_area->icon_group_menu;      
 
             $areas[$parent_area->controller]['controller_label'] = $parent_area->controller_label;
             $areas[$parent_area->controller]['action'][$parent_area->action] = $parent_area->appear;
@@ -105,22 +103,23 @@ class ProfilesTable extends Table
             $areas[$parent_area->controller]['parent_menu'] = $menu_parent;
             $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
 
-            foreach ($parent_area->child_areas as $area) {
+            // / dump($parent_area);
+            // foreach ($parent_area->child_areas as $area) {
 
-                if (!isset($areas[$area->controller]))
-                    $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
+            //     if (!isset($areas[$area->controller]))
+            //         $areas[$area->controller] = array('controller_label' => $area->controller_label, 'action' => array(), 'actions_labels' => array());
 
-                $areas[$area->controller]['action'][$area->action] = $area->appear;
-                $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
-                $areas[$area->controller]['controller'] = $area->controller;
-                $areas[$area->controller]['name_group_menu'] = $name_group_menu;
-                $areas[$area->controller]['parent_menu'] = $menu_parent;
-                $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
+            //     $areas[$area->controller]['action'][$area->action] = $area->appear;
+            //     $areas[$area->controller]['actions_labels'][$area->action] = $area->action_label;
+            //     $areas[$area->controller]['controller'] = $area->controller;
+            //     $areas[$area->controller]['name_group_menu'] = $name_group_menu;
+            //     $areas[$area->controller]['parent_menu'] = $menu_parent;
+            //     $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
 
-            }
+            // }
 
         } 
-
+        //dump($areas);
         return $areas;
     }
 }

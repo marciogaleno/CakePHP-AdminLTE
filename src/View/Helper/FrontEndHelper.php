@@ -107,11 +107,13 @@ class FrontEndHelper extends Helper
 
 						foreach ($area->child_areas as $child_area) {
 							
-							$string .= '<li class="active">
-											<a href="' . $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-circle-o"></i>' 
-												. $child_area->controller_label . 
-											'</a>
-										</li>';							
+							if( !empty( $permissions[ $child_area->controller][ 'action' ][ $child_area->action ] ) ){
+								$string .= '<li class="active">
+												<a href="' . $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-circle-o"></i>' 
+													. $child_area->controller_label . 
+												'</a>
+											</li>';
+							}							
 						}
 
 						$string .= '</ul>';	

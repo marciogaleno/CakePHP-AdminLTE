@@ -103,7 +103,7 @@ class AppController extends Controller
     }
 
     public function beforeFilter(Event $event) 
-    {
+    {            
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {
@@ -127,26 +127,26 @@ class AppController extends Controller
 
         if ($controller == null || $action == null) {
 
-            $this->Flash->set("Ocorreu um erro de permiss&otilde;es. (erro: falta de parametros)",['params' => ['class' => 'error']]);
-            $this->redirect("/");
+            $this->Flash->set("Ocorreu um erro de permissão. (erro: falta de parametros)",['params' => ['class' => 'error']]);
+            return $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User")) {
 
-            $this->Flash->set('Por favor, efetue login para ter acesso a esta &aacute;rea.',['params' => ['class' => 'error']]);
-            $this->redirect($this->referer());
+            $this->Flash->set('Por favor, efetue login para ter acesso a esta área.',['params' => ['class' => 'error']]);
+            return $this->redirect($this->referer());
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}")) {
 
-            $this->Flash->set("Voc&ecirc; n&atilde;o tem acesso a esta &Aacute;rea ({$this->label}).",['params' => ['class' => 'error']]);
-            $this->redirect("/");
+            $this->Flash->set("Você não tem acesso a esta área ({$this->name}).",['params' => ['class' => 'error']]);
+            return $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}.action.{$action}")) {
 
-            $this->Flash->set("Voc&ecirc; n&atilde;o tem acesso a esta opera&ccedil;&atilde;o ({$this->label}: {$action}).",['params' => ['class' => 'error']]);
-            $this->redirect("/");
+            $this->Flash->set("Você não tem acesso a esta operação ({$this->name}: {$action}).",['params' => ['class' => 'error']]);
+            return $this->redirect("/");
         }
     }
 

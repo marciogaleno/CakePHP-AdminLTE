@@ -43,6 +43,8 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $user = $this->Users->get($id, [
             'contain' => []
         ]);
@@ -58,6 +60,8 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
