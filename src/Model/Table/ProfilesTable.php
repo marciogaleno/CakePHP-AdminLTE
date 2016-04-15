@@ -89,19 +89,17 @@ class ProfilesTable extends Table
 
         $areas = array();
 
-
         foreach ($profile[0]->areas as $parent_area) {
             
             $name_group_menu = $parent_area->name_group_menu;
-            $menu_parent = $parent_area->controller;
-            $icon_group_menu = $parent_area->icon_group_menu;      
+            $menu_parent = $parent_area->controller;          
 
             $areas[$parent_area->controller]['controller_label'] = $parent_area->controller_label;
             $areas[$parent_area->controller]['action'][$parent_area->action] = $parent_area->appear;
             $areas[$parent_area->controller]['actions_labels'][$parent_area->action] = $parent_area->action_label;
             $areas[$parent_area->controller]['name_group_menu'] = $name_group_menu;
             $areas[$parent_area->controller]['parent_menu'] = $menu_parent;
-            $areas[$parent_area->controller]['icon_group_menu'] = $icon_group_menu;
+
 
             // / dump($parent_area);
             // foreach ($parent_area->child_areas as $area) {

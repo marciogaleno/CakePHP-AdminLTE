@@ -103,7 +103,7 @@ class AppController extends Controller
     }
 
     public function beforeFilter(Event $event) 
-    {            
+    {   
         if ($this->Auth->user()) {  
 
             if (!$this->Session->check("Auth.User.Profile")) {

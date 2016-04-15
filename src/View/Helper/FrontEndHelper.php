@@ -36,14 +36,13 @@ class FrontEndHelper extends Helper
 	{	
 		$name_grou_menu = $this->request->session()->read('Menu.name_group_menu_selected');
 		$icon_group_menu = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.icon_group_menu" );
+		//dump($this->request->session()->read( "Auth.User.Profile" ));
 		$controller_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.controller_label" );
 		$action_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.actions_labels.{$this->request->param('action')}" );
 
 		$string = '';
 
 		$string .= '<ol class="breadcrumb">';
-
-			$string .= '<li><i class="fa '. $icon_group_menu .'"></i> &nbsp;'. $name_grou_menu . '</li>';
 
 			$string .= '<li><a href="'. $this->Url->build("/{$this->request->param('controller')}") . '">'. $controller_label .'</a></li>';
 
@@ -120,7 +119,7 @@ class FrontEndHelper extends Helper
 					$string .= '</li>';
 
 				} else {					
-					$string .= '<li><a href="'. $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-th"></i> <span>' . $area->controller_label . '</span></a></li>';
+					$string .= '<li><a href="'. $this->Url->build(['controller' => $area->controller, 'action' => $area->action]) . '"><i class="fa fa-th"></i> <span>' . $area->controller_label . '</span></a></li>';
 				}
 			}
 		}

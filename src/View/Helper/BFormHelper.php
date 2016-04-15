@@ -46,16 +46,6 @@ class BFormHelper extends Helper {
 			$field = $temp[1];
 		}
 
-		$myTemplates = [
-		    'inputContainer' => 
-		    	'<div class="form-control">{{content}}'.
-
-				'<label for="inputEmail3" class="col-sm-2 control-label">' .  $options['label'] . '</label>'.
-
-		    	'</div>',
-		];
-
-		$this->Form->templates($myTemplates);
 
 		//$str = $this->controlGroupOpen();
 

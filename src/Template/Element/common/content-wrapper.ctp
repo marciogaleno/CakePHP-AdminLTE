@@ -17,7 +17,11 @@
   <section class="content">
 
      <?= $this->Flash->render()?>
+    <div class="col-md-12">
+      <div class="box box-success">
      <?= $this->fetch('content') ?>
+      </div>
+    </div>
     <!-- Small boxes (Stat box) -->
     <div class="row">
 
