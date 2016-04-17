@@ -21,7 +21,7 @@ class UsersController extends AppController
      */
     public function index()
     {   
-        $this->checkAccess($this->name, __FUNCTION__);
+        //$this->checkAccess($this->name, __FUNCTION__);
 
         $this->paginate = [
             'limit' => 15,

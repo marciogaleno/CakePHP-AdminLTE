@@ -90,7 +90,7 @@ class FrontEndHelper extends Helper
 			if( !empty( $permissions[ $area->controller][ 'action' ][ $area->action ] ) ){
 		
 				if( !empty( $area[ 'child_areas' ] ) ){
-					$string .= '<li class="'. $this->selected( $area->controller ) . ' treeview">';
+					$string .= '<li class="'. $this->selected( $area->name_group_menu ) . ' treeview">';
 						$string .= '<a href="#">';
 						$string .= '<i class=" fa '. ( !empty($area->icon_group_menu) ?  $area->icon_group_menu: 'fa-dashboard') . ' "></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
 						$string .= '</a>';
@@ -132,7 +132,6 @@ class FrontEndHelper extends Helper
 
 	private function selected( $name_selected )
 	{
-		
 		if( $this->request->session()->check( "Menu.selected" ) ){
 			if ($this->request->session()->read('Menu.selected') === $name_selected){
 				return 'active';

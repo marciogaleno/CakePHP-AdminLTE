@@ -89,11 +89,12 @@ class AppController extends Controller
         $this->set('title_for_layout', $this->title_for_layout);
         $this->set('controller_label', $this->controllerLabel);
 
-        $menu_parent = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.parent_menu");
         $name_group_menu_selected = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.name_group_menu");
 
-        $this->Session->write('Menu.selected', $menu_parent);
-        $this->Session->write('Menu.name_group_menu_selected', $name_group_menu_selected);
+        $label_group_menu_selected = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.parent_menu");
+
+        $this->Session->write('Menu.selected', $name_group_menu_selected);
+        $this->Session->write('Menu.label_group_menu_selected', $label_group_menu_selected);
 
         if (!array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
