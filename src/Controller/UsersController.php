@@ -72,6 +72,13 @@ class UsersController extends AppController
         }
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
+
+        $list_profiles = $this->Profiles->find('list')->select(['id', 'name']);
+        $this->set('profiles', $list_profiles);
+        
+        $this->set('options', ['M' => 'Masculino', 'F' => 'Feminino']);
+        
+
     }
 
     /**
