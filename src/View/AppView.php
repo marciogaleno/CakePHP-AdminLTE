@@ -41,7 +41,7 @@ class AppView extends View
         $this->loadHelper('Paginator', ['templates' => 'paginator-templates']);
 
         if ($this->request->action !== 'login'){
-            $this->loadHelper('Form', ['templates' => 'app_form',]);
+            $this->loadHelper('Form', ['templates' => 'app_form']);
         }
         
     }

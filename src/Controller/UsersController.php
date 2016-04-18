@@ -11,9 +11,7 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
-    public $setMenuParent = 'Areas';
-    
-    public $setGroupMenu = 'Configurações';
+    private $gender = ['M' => 'Masculino', 'F' => 'Feminino'];
     /**
      * Index method
      *
@@ -64,10 +62,10 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->set(null, ['params' => ['class' => 'success']]);
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                $this->Flash->set(null, ['params' => ['class' => 'error']]);
             }
         }
         $this->set(compact('user'));
@@ -76,7 +74,7 @@ class UsersController extends AppController
         $list_profiles = $this->Profiles->find('list')->select(['id', 'name']);
         $this->set('profiles', $list_profiles);
         
-        $this->set('options', ['M' => 'Masculino', 'F' => 'Feminino']);
+        $this->set('options', $this->gender);
         
 
     }
@@ -143,4 +141,33 @@ class UsersController extends AppController
         //$this->Flash->success('You are now logged out.');
         return $this->redirect($this->Auth->logout());
     }
+
+
+    public function manageAccount() 
+    {
+
+        $user = $this->Users->get($this->Auth->user('id'));
+
+        if ($this->request->is('PUT')) {
+
+            $this->Users->patchEntity($user, $this->request->data);
+
+            if ($this->Users->save($user)) {    
+                $this->Flash->set('Seus dados foram atualizados com <strong>sucesso</strong>.', ['params' => ['class' => 'success']]);
+                $this->Session->write("Auth.User.name", $this->request->data('name'));
+                $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
+                $this->redirect("/");
+            }
+            else
+                $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);
+        
+        }
+
+        if (!$this->Auth->user('pass_switched') && !$this->request->session()->check('Message.flash'))
+            $this->Flash->set('<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. <strong>Antes</strong> de continuar é necessário <strong>modificar sua senha</strong> de acesso.<br />Confira também seus dados abaixo. Feito isto, <strong>não informe sua senha para terceiros</strong>.', ['params' => ['class' => 'error']]);
+
+        $this->set('user', $user);
+        $this->set('options', $this->gender);
+    }
+
 }

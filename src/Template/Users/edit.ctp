@@ -1,24 +1,21 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $user->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
-<div class="users form large-9 medium-8 columns content">
-    <?= $this->Form->create($user) ?>
-    <fieldset>
-        <legend><?= __('Edit User') ?></legend>
-        <?php
-            echo $this->Form->input('email');
-            echo $this->Form->input('password');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+<?= $this->Form->create($user) ?>
+<fieldset>
+    <legend><?= __('Adicionar usuário') ?></legend>
+    <?php
+        echo $this->Form->input('name', ['templateVars' => ['size_element' => '5'], 'placeholder' => 'Nome']);
+
+        echo $this->Form->input('email', ['templateVars' => ['size_element' => '5'], 'placeholder' => 'E-mail']);
+
+        echo $this->Form->input('gender', 
+                ['type' => 'select', 'label' => 'Gênero', 'options' => $options, 'style' => 'position: relative;left: 14px;width:430px', 'empty' => '(Escolha um gênero)']             
+             );
+
+        echo $this->Form->input('profile_id', 
+                ['placeholder' => 'Digite sua senha', 'style' => 'position: relative;left: 14px;width:430px', 'empty' => '(Escolha um perfil)', 'requerid' => false]
+             );
+
+        echo $this->Form->submit(__('Salvar'), ['templateVars' => ['name_button_cancel' => 'Cancelar', 'url_button_cancel' => $this->Url->build(DS. $this->name)]]);
+    ?>
+</fieldset>
+<?= $this->Form->end() ?>
+
