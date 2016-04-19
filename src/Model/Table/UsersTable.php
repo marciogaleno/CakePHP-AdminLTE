@@ -6,6 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Users Model
@@ -54,15 +55,22 @@ class UsersTable extends Table
             ->requirePresence('profile_id', 'create')
             ->notEmpty('profile_id');
 
-        $validator = new Validator();
-
-        $validator->provider('custom', 'App\Model\Entity\User');
-
-        $validator->add('newPassword', 'passwordConfirm',[
-            'rule' => 'passwordConfirm',
-            'Porfavor confirme a senha'
-            
+        $validator->add('password', 'custom', [
+            'rule' => [$this, 'currentPassword'],
+            'message' => 'Senha incorreta.'
         ]);
+
+        $validator->add('passwordConfirm', 'custom', [
+            'rule' => [$this, 'passwordConfirm'],
+            'message' => 'Senha de Confirmação não confere.'
+        ]);
+        
+        $validator
+            ->add('newPassword', 'custom', [
+            'rule' => [$this, 'newPassNotEmpty'],
+            'message' => 'Preencha sua nova senha.'
+        ]);
+
 
         return $validator;
     }
@@ -89,39 +97,36 @@ class UsersTable extends Table
         $this->save($user);
     }
 
-    // public function passwordConfirm( $check )
-    // {
-        
-    //     return array_pop( $check ) == $this->data[ $this->name ][ 'newPassword' ];
-    // }
+    public function passwordConfirm( $check, $context )
+    {   
+        return $check == $context['data']['newPassword'];
+    }
     
-    // public function currentPassword( $check )
-    // {
+    public function currentPassword( $check, $context)
+    {
+        $user = $this->get($context['data']['id']);
+
+        $hasher = new DefaultPasswordHasher();
+
+        return $hasher->check($check, $user->password);
+    }
+
+
+    public function newPassNotEmpty( $check )
+    {
+        $user = $this->get($context['data']['id']);
+        dump($user);
+        if( isset( $user->_passSwitched ) ){
+
+            if( !$this->_passSwitched ){
+
+                $value = array_pop( $check );
+                return !empty( $value );
+            }
+        }
         
-    //     $currentPassword = $this->field( 'password' );
-    //     return AuthComponent::password( array_pop( $check ) ) == $currentPassword;
-    // }
-
-    // public function passNotEmpty( $check )
-    // {
-        
-    //     return array_pop( $check ) != '';
-    // }
-
-    // public function newPassNotEmpty( $check )
-    // {
-
-    //     if( isset( $this->_passSwitched ) ){
-
-    //         if( !$this->_passSwitched ){
-
-    //             $value = array_pop( $check );
-    //             return !empty( $value );
-    //         }
-    //     }
-        
-    //     return true;
-    // }
+        return true;
+    }
     
     // public function newPassNotSame( $check )
     // {

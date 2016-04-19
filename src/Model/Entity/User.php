@@ -46,9 +46,4 @@ class User extends Entity
         return $hasher->hash($value);
     }
 
-    public function passwordConfirm( $check, $context)
-    {
-        dump($context); die;
-        //return array_pop( $check ) == $this->data[ $this->name ][ 'newPassword' ];
-    }
 }

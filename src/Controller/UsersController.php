@@ -100,6 +100,7 @@ class UsersController extends AppController
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         }
+
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
     }
@@ -149,7 +150,6 @@ class UsersController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
 
         if ($this->request->is('PUT')) {
-
             $this->Users->patchEntity($user, $this->request->data);
 
             if ($this->Users->save($user)) {    
@@ -166,7 +166,9 @@ class UsersController extends AppController
         if (!$this->Auth->user('pass_switched') && !$this->request->session()->check('Message.flash'))
             $this->Flash->set('<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. <strong>Antes</strong> de continuar é necessário <strong>modificar sua senha</strong> de acesso.<br />Confira também seus dados abaixo. Feito isto, <strong>não informe sua senha para terceiros</strong>.', ['params' => ['class' => 'error']]);
 
-        $this->set('user', $user);
+        unset($user->password);
+        $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
         $this->set('options', $this->gender);
     }
 
