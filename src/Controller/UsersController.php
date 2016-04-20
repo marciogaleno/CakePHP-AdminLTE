@@ -150,12 +150,13 @@ class UsersController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
 
         if ($this->request->is('PUT')) {
+
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {    
                 $this->Flash->set('Seus dados foram atualizados com <strong>sucesso</strong>.', ['params' => ['class' => 'success']]);
                 $this->Session->write("Auth.User.name", $this->request->data('name'));
                 $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
-                $this->redirect("/");
+                return $this->redirect("/");
             }
             else
                 $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);

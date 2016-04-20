@@ -106,7 +106,6 @@ class AppController extends Controller
     public function beforeFilter(Event $event) 
     {   
         if ($this->Auth->user()) {  
-
             if (!$this->Session->check("Auth.User.Profile")) {
                 $this->Session->write("Auth.User.Profile", $this->Profiles->getAreas($this->Auth->user("profile_id")));
                 $this->Users->lastLogin($this->Auth->user("id"));
@@ -127,25 +126,25 @@ class AppController extends Controller
     {   
 
         if ($controller == null || $action == null) {
-
+            die('aki01');
             $this->Flash->set("Ocorreu um erro de permissão. (erro: falta de parametros)",['params' => ['class' => 'error']]);
             return $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User")) {
-
+            die('aki00');
             $this->Flash->set('Por favor, efetue login para ter acesso a esta área.',['params' => ['class' => 'error']]);
             return $this->redirect($this->referer());
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}")) {
-
+            die('aki03');
             $this->Flash->set("Você não tem acesso a esta área ({$this->name}).",['params' => ['class' => 'error']]);
             return $this->redirect("/");
         }
 
         if (!$this->Session->check("Auth.User.Profile.{$controller}.action.{$action}")) {
-
+            die('aki04');
             $this->Flash->set("Você não tem acesso a esta operação ({$this->name}: {$action}).",['params' => ['class' => 'error']]);
             return $this->redirect("/");
         }

@@ -7,6 +7,9 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Event\Event;
+use Cake\ORM\Entity;
+
 
 /**
  * Users Model
@@ -15,6 +18,7 @@ use Cake\Auth\DefaultPasswordHasher;
 class UsersTable extends Table
 {
 
+    private $_hasher;
     /**
      * Initialize method
      *
@@ -30,8 +34,10 @@ class UsersTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
-
         $this->belongsTo('Profiles');
+
+        $this->_hasher = new DefaultPasswordHasher();
+
     }
 
     /**
@@ -59,21 +65,23 @@ class UsersTable extends Table
             ->add('password', 'custom', [
                 'rule' => [$this, 'currentPassword'],
                 'message' => 'Senha incorreta.'
-        ]);
+            ]);
 
         $validator
             ->allowEmpty('newPassword')
             ->add('newPassword', 'custom',[
                 'rule' => [$this, 'newPassNotSame'],
                 'message' => 'Sua nova senha não pode ser igual a senha antiga'
-        ]);
+            ]);
 
         $validator
-            ->allowEmpty('passwordConfirm')
+            ->notEmpty('passwordConfirm', 'Senha de Confirmação não confere', function ($context) {
+                return $context['data']['passwordConfirm'] != $context['data']['newPassword'];
+            })
             ->add('passwordConfirm', 'custom', [
                 'rule' => [$this, 'passwordConfirm'],
                 'message' => 'Senha de Confirmação não confere'
-        ]);
+            ]);
         
 
 
@@ -103,34 +111,28 @@ class UsersTable extends Table
         $this->save($user);
     }
 
-    public function passwordConfirm( $check, $context )
-    {   
-        return $check == $context['data']['newPassword'];
-    }
     
     public function currentPassword( $check, $context)
     {
         $user = $this->get($context['data']['id']);
 
-        $hasher = new DefaultPasswordHasher();
-
-        return $hasher->check($check, $user->password);
+        return $this->_hasher->check($check, $user->password);
     }
 
     
     public function newPassNotSame( $check, $context)
-    {
+    {   
         $user = $this->get($context['data']['id']);
 
-        if( isset( $user->pass_switched ) ){
+        if ( isset( $user->pass_switched ) ) {
             
             $currentPassword = $user->password;
 
-            $hasher = new DefaultPasswordHasher();
-
-            return $hasher->hash( $check) != $currentPassword;
+            if ($this->_hasher->check($check, $currentPassword)){
+                return false;
+            }
         }
-        
+         
         return true;
     }
 
@@ -176,10 +178,10 @@ class UsersTable extends Table
     // public function beforeSave( $options = array() )
     // {
 
-    //     if( !$this->id )
+    //     if ( !$this->id )
     //         $this->data[ $this->name ][ 'password' ] = AuthComponent::password( '123456' );
 
-    //     elseif( !empty( $this->data[ $this->name ][ 'newPassword' ] ) ){
+    //     elseif ( !empty( $this->data[ $this->name ][ 'newPassword' ] ) ) {
 
     //         $this->data[ $this->name ][ 'password' ] = AuthComponent::password( $this->data[ $this->name ][ 'newPassword' ] );
     //         unset( $this->data[ $this->name ][ 'newPassword' ] );
@@ -191,10 +193,10 @@ class UsersTable extends Table
     //             if( !$this->_passSwitched )
     //                 $this->_passSwitched = $this->data[ $this->name ][ 'pass_switched' ] = '1';
 
-    //     } elseif( isset( $this->data[ $this->name ][ 'password' ] ) )
+    //     } elseif ( isset( $this->data[ $this->name ][ 'password' ] ) )
     //         unset( $this->data[ $this->name ][ 'password' ] );
 
-    //     if( isset( $this->data[ $this->name ][ 'pass_switched' ] ) )
+    //     if ( isset( $this->data[ $this->name ][ 'pass_switched' ] ) )
     //         if( !$this->data[ $this->name ][ 'pass_switched' ] )
     //             unset( $this->data[ $this->name ][ 'pass_switched' ] );
         
@@ -202,8 +204,14 @@ class UsersTable extends Table
     // }
 
     public function beforeSave(Event $event, Entity $entity) 
-    {
-        dump($event);
+    {   
+        if ($entity->isNew()) {
+            $entity->password = '123456'; 
+        } elseif(!empty($entity->newPassword)){
+            $entity->password = $entity->newPassword;
+        }
+
+        //die;
     }   
 
 }
