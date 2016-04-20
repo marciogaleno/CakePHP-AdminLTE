@@ -19,7 +19,6 @@
     <fieldset>
         <legend><?= __('Edit Area') ?></legend>
         <?php
-            echo $this->Form->input('parent_id', ['options' => $parentAreas, 'empty' => true]);
             echo $this->Form->input('appear');
             echo $this->Form->input('controller');
             echo $this->Form->input('controller_label');

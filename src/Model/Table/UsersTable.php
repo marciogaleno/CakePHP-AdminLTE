@@ -55,21 +55,27 @@ class UsersTable extends Table
             ->requirePresence('profile_id', 'create')
             ->notEmpty('profile_id');
 
-        $validator->add('password', 'custom', [
-            'rule' => [$this, 'currentPassword'],
-            'message' => 'Senha incorreta.'
+        $validator
+            ->add('password', 'custom', [
+                'rule' => [$this, 'currentPassword'],
+                'message' => 'Senha incorreta.'
         ]);
 
-        $validator->add('passwordConfirm', 'custom', [
-            'rule' => [$this, 'passwordConfirm'],
-            'message' => 'Senha de Confirmação não confere.'
+        $validator
+            ->allowEmpty('newPassword')
+            ->add('newPassword', 'custom',[
+                'rule' => [$this, 'newPassNotSame'],
+                'message' => 'Sua nova senha não pode ser igual a senha antiga'
+        ]);
+
+        $validator
+            ->allowEmpty('passwordConfirm')
+            ->add('passwordConfirm', 'custom', [
+                'rule' => [$this, 'passwordConfirm'],
+                'message' => 'Senha de Confirmação não confere'
         ]);
         
-        $validator
-            ->add('newPassword', 'custom', [
-            'rule' => [$this, 'newPassNotEmpty'],
-            'message' => 'Preencha sua nova senha.'
-        ]);
+
 
 
         return $validator;
@@ -78,7 +84,7 @@ class UsersTable extends Table
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
-     *
+     *  
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
@@ -111,37 +117,22 @@ class UsersTable extends Table
         return $hasher->check($check, $user->password);
     }
 
-
-    public function newPassNotEmpty( $check )
+    
+    public function newPassNotSame( $check, $context)
     {
         $user = $this->get($context['data']['id']);
-        dump($user);
-        if( isset( $user->_passSwitched ) ){
 
-            if( !$this->_passSwitched ){
+        if( isset( $user->pass_switched ) ){
+            
+            $currentPassword = $user->password;
 
-                $value = array_pop( $check );
-                return !empty( $value );
-            }
+            $hasher = new DefaultPasswordHasher();
+
+            return $hasher->hash( $check) != $currentPassword;
         }
         
         return true;
     }
-    
-    // public function newPassNotSame( $check )
-    // {
-
-    //     if( isset( $this->_passSwitched ) ){
-            
-    //         if( !$this->_passSwitched ){
-                
-    //             $currentPassword = $this->field( 'password' );
-    //             return AuthComponent::password( array_pop( $check ) ) != $currentPassword;
-    //         }
-    //     }
-        
-    //     return true;
-    // }
 
     // public static function isAdmin( $profile_id = null )
     // {
@@ -210,4 +201,10 @@ class UsersTable extends Table
     //     return true;
     // }
 
+    public function beforeSave(Event $event, Entity $entity) 
+    {
+        dump($event);
+    }   
+
 }
+

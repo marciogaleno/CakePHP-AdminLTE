@@ -78,6 +78,7 @@ class ProfilesController extends AppController
         $profile = $this->Profiles->get($id, [
             'contain' => ['Areas']
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $profile = $this->Profiles->patchEntity($profile, $this->request->data);
             if ($this->Profiles->save($profile)) {

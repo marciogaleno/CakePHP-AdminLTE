@@ -46,4 +46,5 @@ class User extends Entity
         return $hasher->hash($value);
     }
 
+
 }

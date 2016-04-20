@@ -150,8 +150,7 @@ class UsersController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
 
         if ($this->request->is('PUT')) {
-            $this->Users->patchEntity($user, $this->request->data);
-
+            $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {    
                 $this->Flash->set('Seus dados foram atualizados com <strong>sucesso</strong>.', ['params' => ['class' => 'success']]);
                 $this->Session->write("Auth.User.name", $this->request->data('name'));

@@ -90,9 +90,8 @@ class AreasController extends AppController
                 $this->Flash->error(__('The area could not be saved. Please, try again.'));
             }
         }
-        $parentAreas = $this->Areas->ParentAreas->find('list', ['limit' => 200]);
         $profiles = $this->Areas->Profiles->find('list', ['limit' => 200]);
-        $this->set(compact('area', 'parentAreas', 'profiles'));
+        $this->set(compact('area', 'profiles'));
         $this->set('_serialize', ['area']);
     }
 
