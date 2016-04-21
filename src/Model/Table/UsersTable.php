@@ -68,23 +68,19 @@ class UsersTable extends Table
             ]);
 
         $validator
-            ->allowEmpty('newPassword')
+            ->notEmpty('newPassword', 'Preencha sua nova senha')
             ->add('newPassword', 'custom',[
                 'rule' => [$this, 'newPassNotSame'],
                 'message' => 'Sua nova senha não pode ser igual a senha antiga'
             ]);
 
         $validator
-            ->notEmpty('passwordConfirm', 'Senha de Confirmação não confere', function ($context) {
-                return $context['data']['passwordConfirm'] != $context['data']['newPassword'];
-            })
+            ->notEmpty('passwordConfirm', 'Confirme sua nova senha')
             ->add('passwordConfirm', 'custom', [
                 'rule' => [$this, 'passwordConfirm'],
                 'message' => 'Senha de Confirmação não confere'
             ]);
         
-
-
 
         return $validator;
     }
@@ -134,6 +130,11 @@ class UsersTable extends Table
         }
          
         return true;
+    }
+
+    public function passwordConfirm($check, $context)
+    {
+        return $context['data']['passwordConfirm'] == $context['data']['newPassword'];
     }
 
     // public static function isAdmin( $profile_id = null )
