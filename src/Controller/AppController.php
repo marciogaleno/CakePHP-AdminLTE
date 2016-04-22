@@ -112,8 +112,11 @@ class AppController extends Controller
                 $this->Menu->mount();              
             }
 
-            // if (!$this->Auth->user('pass_switched') && $this->action != 'manageAccount')
-            //     $this->redirect(array('controller' => 'users', 'action' => 'manageAccount'));
+            $currentAction = $this->request->param('action');
+
+            if (!$this->Auth->user('pass_switched') && $currentAction != 'changePassword'){
+                $this->redirect(['controller' => 'users', 'action' => 'changePassword']);
+            }
         }
     }
 

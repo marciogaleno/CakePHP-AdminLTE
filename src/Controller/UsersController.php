@@ -156,15 +156,12 @@ class UsersController extends AppController
                 $this->Flash->set('Seus dados foram atualizados com <strong>sucesso</strong>.', ['params' => ['class' => 'success']]);
                 $this->Session->write("Auth.User.name", $this->request->data('name'));
                 $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
-                return $this->redirect("/");
+                return $this->redirect($this->referer());
             }
             else
                 $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);
         
         }
-
-        if (!$this->Auth->user('pass_switched') && !$this->request->session()->check('Message.flash'))
-            $this->Flash->set('<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. <strong>Antes</strong> de continuar é necessário <strong>modificar sua senha</strong> de acesso.<br />Confira também seus dados abaixo. Feito isto, <strong>não informe sua senha para terceiros</strong>.', ['params' => ['class' => 'error']]);
 
         unset($user->password);
         $this->set(compact('user'));
@@ -180,17 +177,17 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {    
-                $this->Flash->set('Sua senha foi alterada com <strong>sucesso</strong>.', ['params' => ['class' => 'success']]);
+                $this->Flash->set("Sua senha foi alterada com <strong>sucesso</strong>.", ['params' => ['class' => 'success']]);
                 $this->Session->write("Auth.User.name", $this->request->data('name'));
                 $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
-                return $this->redirect("/");
+                return $this->redirect($this->referer());
             }
             else
                 $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);
         
         }
 
-        if (!$this->Auth->user('pass_switched') && !$this->request->session()->check('Message.flash'))
+        if (!$this->Auth->user('pass_switched'))
             $this->Flash->set('<h4>Bem vindo(a)!</h4>Este é seu primeiro acesso a este Sistema. <strong>Antes</strong> de continuar é necessário <strong>modificar sua senha</strong> de acesso.<br />Confira também seus dados abaixo. Feito isto, <strong>não informe sua senha para terceiros</strong>.', ['params' => ['class' => 'error']]);
 
 

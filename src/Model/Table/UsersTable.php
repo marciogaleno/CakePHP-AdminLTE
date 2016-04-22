@@ -208,11 +208,24 @@ class UsersTable extends Table
     {   
         if ($entity->isNew()) {
             $entity->password = '123456'; 
-        } elseif(!empty($entity->newPassword)){
+        } elseif (!empty($entity->newPassword)) {
             $entity->password = $entity->newPassword;
+
+            if (isset($entity->pass_switched)){
+                if (!$entity->pass_switched){
+                    $entity->pass_switched = $entity->pass_switched = '1';
+                }
+            }
+        } elseif (isset($entity->password)) {
+            unset($entity->password);
         }
 
-        //die;
+        if (isset($entity->pass_switched)) {
+            if (!$entity->pass_switched) {
+                unset($entity->pass_switched);
+            }
+        }
+        
     }   
 
 }
