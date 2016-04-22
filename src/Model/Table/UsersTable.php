@@ -140,8 +140,9 @@ class UsersTable extends Table
     public static function isAdmin( $profile_id = null )
     {
 
-        if( !$profile_id )
+        if( !$profile_id ){
             $profile_id = $this->Auth->user("profile_id");
+        }
 
         return $profile_id == Configure::read( 'AdminProfileId' );
     }
@@ -149,8 +150,9 @@ class UsersTable extends Table
     public static function isAdminUser( $user_id = null )
     {
 
-        if( !$user_id )
-            $user_id = $this->Auth->user("id"));
+        if( !$user_id ){
+            $user_id = $this->Auth->user("id");
+        }
 
         return $user_id == Configure::read( 'AdminUserId' );
     }
