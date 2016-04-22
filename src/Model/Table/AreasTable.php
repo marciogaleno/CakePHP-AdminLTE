@@ -95,12 +95,11 @@ class AreasTable extends Table
     public function lists() {
 
         $areas = $this->find()
-            ->select('id', 'controller_label', 'action_label');
+            ->select(['id', 'controller_label', 'action_label']);
 
         $areasLista = array();
 
         foreach ($areas as $area) {
-
             $index = $area->controller_label;
             $areasLista[$index][$area->id] = $area->action_label;
         }

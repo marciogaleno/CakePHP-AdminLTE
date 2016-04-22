@@ -61,9 +61,9 @@ class ProfilesController extends AppController
                 $this->Flash->error(__('The profile could not be saved. Please, try again.'));
             }
         }
-        $areas = $this->Profiles->Areas->find('list', ['limit' => 200]);
+        $areas = $this->Profiles->Areas->lists();
         $this->set(compact('profile', 'areas'));
-        $this->set('_serialize', ['profile']);
+        $this->set('_serialize', ['profile', 'areas']);
     }
 
     /**
