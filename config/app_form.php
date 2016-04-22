@@ -15,5 +15,7 @@ return [
 	'error' => '<span class="help-block">{{content}}</span>',
 	'checkbox' => '<input type="checkbox" class="minimal" name="{{name}}" value="{{value}}"{{attrs}}>',
     'checkboxFormGroup' => '{{label}}',
-    'checkboxWrapper' => '<div class="checkbox">{{label}}</div>'
+    'checkboxWrapper' => '<div class="checkbox">{{label}}</div>',
+    'multicheckboxTitle' => '<legend>{{text}}</legend>',
+    'multicheckboxWrapper' => '<fieldset{{attrs}}>{{content}}</fieldset></br>',
 ];

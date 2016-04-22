@@ -80,7 +80,10 @@ class ProfilesController extends AppController
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $profile = $this->Profiles->patchEntity($profile, $this->request->data);
+            $profile = $this->Profiles->patchEntity($profile, $this->request->data, ['associated' => ['Areas']]);
+            if ($profile->errors()){
+                dump($profile->errors());
+            }
             if ($this->Profiles->save($profile)) {
                 $this->Flash->success(__('The profile has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -88,7 +91,7 @@ class ProfilesController extends AppController
                 $this->Flash->error(__('The profile could not be saved. Please, try again.'));
             }
         }
-        $areas = $this->Profiles->Areas->find('list', ['limit' => 200]);
+        $areas = $areas = $this->Profiles->Areas->lists();
         $this->set(compact('profile', 'areas'));
         $this->set('_serialize', ['profile']);
     }

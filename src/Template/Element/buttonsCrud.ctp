@@ -41,6 +41,7 @@ $this->element('buttonsCrud', [
 
 		<?php if ($this->request->session()->check("Auth.User.Profile.{$this->name}.action.{$action}")):?>
 
+			<?php if ($action != 'delete') {?>
 			<a href="
 
 			<?= (!empty($value) ? $this->Url->build("{$value}") : $this->Url->build(['controller' => $this->name, 'action' => $action]))?>"
@@ -57,10 +58,23 @@ $this->element('buttonsCrud', [
 			<?= (!empty($actions_labels[$action]) ? $actions_labels[$action] : $this->request->session()->read("Auth.User.Profile.{$this->name}.actions_labels.{$action}"))?>
 
 			</a>
-				
+			<?php } else {?>
+
+				<?php 
+					
+					echo $this->Form->button("{$this->request->session()->read("Auth.User.Profile.{$this->name}.actions_labels.{$action}")}", ['class' => 'btn btn-danger btn-sm', 'type' => 'submit', 'form' => "form{$value->id}"]);
+					
+
+				?>
+				<form action="<?=$this->Url->build(['controller' => $this->name, 'action' => 'delete', $value->id]) ?>" method="POST" id="form<?=$value->id?>">
+
+				</form>
+			<?php }?>
 		<?php endif;?>
 
 	<?php endforeach;?>
+
+				
 
 <?php endif;?>
 

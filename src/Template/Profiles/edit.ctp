@@ -1,26 +1,21 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $profile->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $profile->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Profiles'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Areas'), ['controller' => 'Areas', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Area'), ['controller' => 'Areas', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="profiles form large-9 medium-8 columns content">
-    <?= $this->Form->create($profile) ?>
-    <fieldset>
-        <legend><?= __('Edit Profile') ?></legend>
+<?php 
+    $this->Form->templates([
+        'radioFormGroup' => '<div class="radio">{{label}}{{input}}</div>'
+    ]);
+?>
+<?= $this->Form->create($profile) ?>
+<fieldset class="col-md-9">
+    <legend><?= __('Add Profile') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('areas._ids', ['options' => $areas]);
+            echo $this->Form->input('name', ['teste']);
         ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+    <div class="box box-solid">
+        <?= $this->Form->input('areas._ids', ['options' => $areas, 'multiple' => 'checkbox', 'label' => false, 'hiddenField' => false]);?>
+    </div>
+
+    <?php
+        echo $this->Form->submit(__('Salvar'), ['templateVars' => ['name_button_cancel' => 'Cancelar', 'url_button_cancel' => $this->Url->build(DS. $this->name)]]);
+        echo $this->Form->end();
+
+    ?>
+</fieldset>
