@@ -8,16 +8,18 @@ Exemplo de utlização deste elmento:
 Caso não seja passado algumas chaves do array do segundo parâmetro, então será colocado algumas configurações padrões. 
 
 $this->element('buttonsCrud', [
-                'actions' => ['action' => 'url'], //Esse parâmetro é obrigatório
+                'actions' => ['action' => 'url ou objeto de entidade (somente quando a action for do tipo delete)'], //Esse parâmetro é obrigatório
                 'actions_labels' => ['action' => 'label_da_action'],
                 'class_icons' => ['action' => 'class_do_icone'], 
                 'class_buttons' => ['action' => 'class_do_botão']]
 
+=> EXEMPLO:
 $this->element('buttonsCrud', [
-                'actions' => ['delete' => '/users/delete', 'add' => '/users/cadastrar'], 
+                'actions' => ['view' => 'users/view/1', 'add' => '/users/cadastrar', delete' => $user], 
                 'actions_labels' => ['delete' => 'Remover', 'add' => 'Cadastrar'],
                 'class_icons' => ['add' => 'fa-plus'], 
                 'class_buttons' => ['add' => 'btn-success']]
+
 **/
 
 ?>
@@ -61,10 +63,11 @@ $this->element('buttonsCrud', [
 			<?php } else {?>
 
 				<?php 
-					
-					echo $this->Form->button("{$this->request->session()->read("Auth.User.Profile.{$this->name}.actions_labels.{$action}")}", ['class' => 'btn btn-danger btn-sm', 'type' => 'submit', 'form' => "form{$value->id}"]);
-					
+					$label_action = $this->request->session()->read("Auth.User.Profile.{$this->name}.actions_labels.{$action}");
+					$icon = '<i class="fa ' . (!empty($class_icons_default[$action]) ? $class_icons_default[$action] : '') . '"></i>';
 
+					echo $this->Form->button("{$icon} {$label_action}", ['class' => 'btn btn-danger btn-sm', 'type' => 'submit', 'form' => "form{$value->id}"]);
+					
 				?>
 				<form action="<?=$this->Url->build(['controller' => $this->name, 'action' => 'delete', $value->id]) ?>" method="POST" id="form<?=$value->id?>">
 

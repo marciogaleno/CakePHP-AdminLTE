@@ -1,7 +1,7 @@
 <div class="box-header with-border">
   <h3 class="box-title">Filtros</h3>
   </div><!-- /.box-header -->
-  <div class="box-body no-padding">
+  <div class="box-body">
     <div class="mailbox-controls">
       <!-- Check all button -->
       <?= $this->element('buttonsCrud', ['actions' => ['add' => '']]);?>
@@ -42,5 +42,3 @@
     </div><!-- /.pull-right -->
   </div>
 </div>
-
-             
