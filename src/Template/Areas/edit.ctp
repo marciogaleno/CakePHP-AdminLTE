@@ -4,8 +4,7 @@
         <legend><?= __('Edit Area') ?></legend>
         <?php
             echo $this->Form->input('appear', ['label' => 'Aparecer']);
-            echo $this->Form->input('name_group_menu');
-            echo $this->Form->input('label_group_name');
+            echo $this->Form->input('group_menu_id', ['type' => 'select','options' => $group_menus, 'empty' => '(Selecione a área pai)', 'templateVars' => ['size_select' => '5']]);
             echo $this->Form->input('controller');
             echo $this->Form->input('controller_label');
             echo $this->Form->input('action');

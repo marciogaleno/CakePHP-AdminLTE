@@ -36,27 +36,43 @@ class MenuComponent extends Component
 	{	
 
 		$profiles = TableRegistry::get('Profiles');
-		
+
 		$areas = $profiles->find()
 				->select('id')
 				->where(['id' =>  $this->request->session()->read('Auth.User.profile_id')])
 				->contain([
 					'Areas' => function ($query){
                         return $query->where(['Areas.appear' => '1', function ($exp, $q) {
-                                            return $exp->isNull('parent_id');
-                                     }])
-									 ->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.parent_id'])
-									 ->contain([
-									 	'ChildAreas' => function ($q) {
-									 		return $q->where(['appear' => '1'])
-									 		         ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id']);
+                                			return $exp->isNull('parent_id');
+                         				}])
+								 		->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.icon', 'Areas.parent_id', 'GroupMenus.id', 'GroupMenus.name','GroupMenus.icon'])
+							 			->contain([
+								 		'GroupMenus',
+								 		'ChildAreas' => function ($q) {
+								 		return $q->where(['appear' => '1'])
+								 		         ->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.icon']);
 									 				 
 									 }]);
 					}
 				])
 				->toArray();
-				
-		$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
+
+		
+	    $group_menus = [];
+
+		foreach ($areas[0]->areas as $area) {
+			if (!empty($area->group_menu->id)){
+				$group_menus[$area->group_menu->id]['areas'][] = $area;
+				$group_menus[$area->group_menu->id]['name'] = $area->group_menu->name;
+				$group_menus[$area->group_menu->id]['icon'] = $area->group_menu->icon;
+			} else {
+				$group_menus[] = $area;
+			}
+
+			
+		}
+
+		$this->request->session()->write( 'Auth.User.Menu', $group_menus);
 
 	}
 }

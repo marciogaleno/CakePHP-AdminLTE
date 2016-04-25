@@ -76,11 +76,11 @@ class ProfilesTable extends Table
                 ->where(['id' =>  $profile_id])
                 ->contain([
                     'Areas' => function ($query){
-                        return $query->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon_group_menu', 'Areas.appear'])
+                        return $query->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon', 'Areas.appear', 'GroupMenus.id', 'GroupMenus.name'])
                                      ->contain([
-                                        'GroupsMenu',
+                                        'GroupMenus',
                                         'ChildAreas' => function ($q) {
-                                            return $q->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear'])
+                                            return $q->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear', 'ChildAreas.icon'])
                                                      ->order(['controller_label' => 'ASC']);
                                                      
                                      }]);
@@ -89,14 +89,20 @@ class ProfilesTable extends Table
                 ->toArray();
 
         $areas = array();
-        dump($profile);
+        
         foreach ($profile[0]->areas as $parent_area) {         
-
             $areas[$parent_area->controller]['controller_label'] = $parent_area->controller_label;
             $areas[$parent_area->controller]['action'][$parent_area->action] = $parent_area->appear;
             $areas[$parent_area->controller]['actions_labels'][$parent_area->action] = $parent_area->action_label;
-            $areas[$parent_area->controller]['name_group_menu'] = $parent_area->name_group_menu;
-            $areas[$parent_area->controller]['label_group_menu'] = $parent_area->label_group_menu;
+
+            if (!empty($parent_area->group_menu->name)) {
+                $areas[$parent_area->controller]['name_group_menu'] = $parent_area->group_menu->name;
+            }
+            
+            if (!empty($parent_area->group_menu->id)) {
+                $areas[$parent_area->controller]['group_menu_id'] = $parent_area->group_menu->id;
+            }
+           
         } 
 
         return $areas;

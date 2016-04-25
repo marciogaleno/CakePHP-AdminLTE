@@ -21,10 +21,12 @@ class AreasController extends AppController
         $this->checkAccess($this->name, __FUNCTION__);
 
         $this->paginate = [
-            'contain' => ['ChildAreas']
+            'contain' => ['ChildAreas', 'GroupMenus']
         ];
         
         $areas = $this->paginate($this->Areas);
+
+        //dump($areas);
 
         $this->set(compact('areas'));
         $this->set('_serialize', ['areas']);
@@ -40,7 +42,7 @@ class AreasController extends AppController
     public function view($id = null)
     {   
         $area = $this->Areas->get($id, [
-            'contain' => ['Profiles', 'ChildAreas']
+            'contain' => ['ChildAreas']
         ]);
 
         $this->set('area', $area);
@@ -76,8 +78,11 @@ class AreasController extends AppController
                 return $e->label_group_name . ' > ' . $e->controller_label . ' > ' . $e->action_label;
             }
         ]);
-        $this->set(compact('area', 'ChildAreas'));
-        $this->set('_serialize', ['area', 'ChildAreas']);
+
+        $group_menus = $this->Areas->GroupMenus->find('list');
+
+        $this->set(compact('area', 'ChildAreas', 'group_menus'));
+        $this->set('_serialize', ['area', 'ChildAreas', 'group_menus']);
     }
 
     /**
@@ -114,8 +119,10 @@ class AreasController extends AppController
             }
         ]);
 
-        $this->set(compact('area', 'ChildAreas'));
-        $this->set('_serialize', ['area', 'ChildAreas']);
+         $group_menus = $this->Areas->GroupMenus->find('list');
+
+        $this->set(compact('area', 'ChildAreas', 'group_menus'));
+        $this->set('_serialize', ['area', 'ChildAreas', 'group_menus']);
     }
 
     /**

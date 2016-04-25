@@ -42,6 +42,8 @@ class AreasTable extends Table
             'targetForeignKey' => 'profile_id',
             'joinTable' => 'areas_profiles'
         ]);
+
+       $this->belongsTo('GroupMenus');
     }
 
     /**

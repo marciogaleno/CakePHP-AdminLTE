@@ -34,8 +34,7 @@ class FrontEndHelper extends Helper
 
 	public function getNavegation()
 	{	
-		$name_grou_menu = $this->request->session()->read('Menu.name_group_menu_selected');
-		$icon_group_menu = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.icon_group_menu" );
+
 		//dump($this->request->session()->read( "Auth.User.Profile" ));
 		$controller_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.controller_label" );
 		$action_label = $this->request->session()->read( "Auth.User.Profile.{$this->request->param('controller')}.actions_labels.{$this->request->param('action')}" );
@@ -79,49 +78,50 @@ class FrontEndHelper extends Helper
 	{
 		
 		$string = '';
-		$areas = $this->request->session()->read( "Auth.User.Menu" );
+		$areas_by_group = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
 
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';
 
-		foreach ($areas as $area) {
-			// se tiver permissao para controller/action
-			if( !empty( $permissions[ $area->controller][ 'action' ][ $area->action ] ) ){
-		
-				if( !empty( $area[ 'child_areas' ] ) ){
-					$string .= '<li class="'. $this->selected( $area->name_group_menu ) . ' treeview">';
-						$string .= '<a href="#">';
-						$string .= '<i class=" fa '. ( !empty($area->icon_group_menu) ?  $area->icon_group_menu: 'fa-dashboard') . ' "></i> <span>'. $area->name_group_menu .'</span> <i class="fa fa-angle-left pull-right"></i>';
-						$string .= '</a>';
+		foreach ($areas_by_group as $group_id => $group) {
 
-						$string .= '<ul class="treeview-menu">';
+			//Se for array é porque é um grupo
+			if (is_array($group)){
 
-							
-						$string .= '<li class="active">' .
-									    '<a href="' .  $this->Url->build(['controller' => $area->controller, 'action' => $area->action]) . '">
-									   		 <i class="fa fa-circle-o"></i>' . $area->controller_label . 
-									    '</a>
-									</li>';
+				//constrói html de grupo de menu
+				$string .= '<li class="'. $this->selected( $group_id ) . ' treeview">';
+				$string .= '<a href="#">';
+				$string .= '<i class=" fa '. ( !empty($group['icon']) ?  $group['icon'] : 'fa-dashboard') . ' "></i> <span>'. $group['name'] .'</span> <i class="fa fa-angle-left pull-right"></i>';
+				$string .= '</a>';
 
-						foreach ($area->child_areas as $child_area) {
-							
-							if( !empty( $permissions[ $child_area->controller][ 'action' ][ $child_area->action ] ) ){
-								$string .= '<li class="active">
-												<a href="' . $this->Url->build(['controller' => $child_area->controller, 'action' => $child_area->action]) . '"><i class="fa fa-circle-o"></i>' 
-													. $child_area->controller_label . 
-												'</a>
+				$string .= '<ul class="treeview-menu">';
+
+				//Constrói área dentro do grupo de menu
+
+				foreach ($group['areas'] as $area) {
+					
+					// se tiver permissao para controller/action
+					if( !empty( $permissions[ $area->controller ][ 'action' ][ $area->action ] ) ){
+						if( !empty( $area->group_menu->id) ){
+	
+								$string .= '<li class="active">' .
+											    '<a href="' .  $this->Url->build(['controller' => $area->controller, 'action' => $area->action]) . '">
+											   		 <i class="fa fa-circle-o"></i>' . $area->controller_label . 
+											    '</a>
 											</li>';
-							}							
+
 						}
-
-						$string .= '</ul>';	
-					$string .= '</li>';
-
-				} else {					
-					$string .= '<li><a href="'. $this->Url->build(['controller' => $area->controller, 'action' => $area->action]) . '"><i class="fa fa-th"></i> <span>' . $area->controller_label . '</span></a></li>';
+					}
 				}
+				//fecha grupo de menu
+				$string .= '</ul>';	
+				$string .= '</li>';
+				
+			} else {					
+				$string .= '<li><a href="'. $this->Url->build(['controller' => $group->controller, 'action' => $group->action]) . '"><i class="fa ' . ( !empty($group->icon) ? $group->icon : 'fa-tags' ) . '"></i> <span>' . $group->controller_label . '</span></a></li>';
 			}
+
 		}
 		
 		$string .= '</ul>';
@@ -130,10 +130,10 @@ class FrontEndHelper extends Helper
 	}
 	
 
-	private function selected( $name_selected )
+	private function selected( $group_menu_id_selected )
 	{
 		if( $this->request->session()->check( "Menu.selected" ) ){
-			if ($this->request->session()->read('Menu.selected') === $name_selected){
+			if ($this->request->session()->read('Menu.selected') === $group_menu_id_selected){
 				return 'active';
 			}
 		}
