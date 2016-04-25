@@ -3,6 +3,7 @@
 namespace App\View\Helper;
 
 use Cake\View\Helper;
+use Cake\View\View;
 
 class BFormHelper extends Helper {
 
@@ -12,67 +13,33 @@ class BFormHelper extends Helper {
 
 	public $helpers = array( 'Form' );
 
-	private $defaultOptions = array( 
+	public $template_form = [
+		'formStart' => '<form class="form-horizontal" {{attrs}}><div class="box-body">',
+		'formEnd' => '</gmp_div()></form>',
+		'inputContainer' => '<div class="form-group">{{content}}</div>',
+		'input' => '<div class="col-xs-5"><input type="{{type}}" name="{{name}}" class="form-control" {{attrs}}/></div>',
+		'label' => '<label class="col-sm-2 control-label" {{attrs}}>{{text}}</label>',
+		'submitContainer' => '<div class="box-footer"><a href="{{url_button_cancel}}" class="btn btn-default pull-right" style="margin-left:5px">{{name_button_cancel}}</a>{{content}}</div>',
+		'inputSubmit' => '<input class="btn btn-success pull-right" type="{{type}}"{{attrs}}/>',
+		'select' => '<div class="col-md-{{size_select}}"><select class="form-control" name="{{name}}"{{attrs}}>{{content}}</select></div>',
+		'selectMultiple' => '<select name="{{name}}[]" multiple="multiple"{{attrs}} class="form-control">{{content}}</select>',
+		'option' => '<option value="{{value}}"{{attrs}}>{{text}}</option>',
+		'inputContainerError' => '<div class="form-group {{required}} has-error">{{content}}{{error}}</div>',
+		'error' => '<span class="help-block">{{content}}</span>',
+		'checkbox' => '<input type="checkbox" class="minimal" name="{{name}}" value="{{value}}"{{attrs}}>',
+	    'checkboxFormGroup' => '{{label}}',
+	    'checkboxWrapper' => '<div class="checkbox">{{label}}</div>',
+	    'multicheckboxTitle' => '<legend>{{text}}</legend>',
+	    'multicheckboxWrapper' => '<fieldset{{attrs}}>{{content}}</fieldset></br>',
+	];
 
-		'label'  => false, 
-		'class'    => 'form-control', 
-	);
 
 
-
-	/*----------------------------------------
-	 * Methods
-	 ----------------------------------------*/
-
-	private function controlGroupOpen()
+	public function create( $entity, array $options = [])
 	{
-
-		$str = '<div class="box-body">';
-
-		return $str;
-	}
-
-	private function controlGroupClose()
-	{
-
-		return '</div>';
-	}
-
-	public function input( $fieldName, $options = array() ){
-
-		if (stripos($fieldName, '.')){
-			$temp = explode('.', $fieldName);
-			$model = $temp[0];
-			$field = $temp[1];
-		}
-
-
-		//$str = $this->controlGroupOpen();
-
-		$str = '';
-
-		$str .= $this->Form->input($fieldName, array_merge($this->defaultOptions, $options));
+		$this->Form->templates($this->template_form);
+		return $this->Form->create($entity, $options);
 		
-
-		//$str .= $this->controlGroupClose();
-
-		return $str;
-	}
-
-	public function check( $fieldName, $options = array() ){
-
-		
-		
-
-		$str .= $this->controlGroupClose();
-		return $str;	
-	}
-
-	public function radio( $fieldName, $options = array() ){
-
-		
-		$str .= $this->controlGroupClose();
-		return $str;	
 	}
 
 }
