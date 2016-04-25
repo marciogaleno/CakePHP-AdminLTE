@@ -4,18 +4,28 @@
 <div class="box-body">
   <div class="table-responsive mailbox-messages">
     <table class="table table-bordered table-striped">
-      <thead>
-          <tr>
-            <th>Nome</th>
-            <th>E-mail</th>
-          </tr>
-      </thead>
       <tbody>
+          <?php if (!empty($user)): ?>
             <tr>
+              <td><b>Nome</b></td>
               <td><?= $user->name ?></td>
-              <td><?= $user->email ?></td>
-              <td><?= $user->perfil->name ?></td>
             </tr>
+
+            <tr>
+              <td><b>E-mail</b></td>
+              <td><?= $user->email ?></td>
+            </tr>
+
+            <tr>
+              <td><b>Gênero</b></td>
+              <td><?= $user->gender ?></td>
+            </tr>
+
+            <tr>
+              <td><b>Perfil</b></td>
+              <td><?= $user->profile->name ?></td>
+            </tr>
+          <?php endif;?>
       </tbody>
     </table><!-- /.table -->
   </div><!-- /.mail-box-messages -->
@@ -24,7 +34,7 @@
   <div class="mailbox-controls">
     <div class="pull-right">
         <?= $this->element('buttonsCrud', [
-          'actions' => ['edit' => "/profiles/edit/{$profile->id}", 'delete' => $profile]]
+          'actions' => ['edit' => "/users/edit/{$user->id}", 'delete' => $user]]
           )
         ;?>           
     </div>

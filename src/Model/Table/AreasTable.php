@@ -62,6 +62,9 @@ class AreasTable extends Table
             ->notEmpty('appear');
 
         $validator
+            ->allowEmpty('parent_id');
+
+        $validator
             ->requirePresence('controller', 'create')
             ->notEmpty('controller');
 
@@ -88,7 +91,6 @@ class AreasTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentAreas'));
         return $rules;
     }
 

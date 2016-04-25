@@ -36,6 +36,7 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
         $this->belongsTo('Profiles');
 
+
         $this->_hasher = new DefaultPasswordHasher();
 
     }

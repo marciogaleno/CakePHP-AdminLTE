@@ -55,7 +55,7 @@ class MenuComponent extends Component
 					}
 				])
 				->toArray();
-
+				
 		$this->request->session()->write( 'Auth.User.Menu', $areas[0]->areas);
 
 	}

@@ -23,6 +23,7 @@ class AreasController extends AppController
         $this->paginate = [
             'contain' => ['ChildAreas']
         ];
+        
         $areas = $this->paginate($this->Areas);
 
         $this->set(compact('areas'));
@@ -55,18 +56,28 @@ class AreasController extends AppController
     {
         $area = $this->Areas->newEntity();
         if ($this->request->is('post')) {
-            $area = $this->Areas->patchEntity($area, $this->request->data);
-            if ($this->Areas->save($area)) {
-                $this->Flash->set(null,['params' => ['class' => 'success']]);
-                return $this->redirect(['action' => 'index']);
+            $area = $this->Areas->patchEntity($area, $this->request->data, ['associated' => ['ChildAreas']]);
+            if (!$area->errors()){
+               if ($this->Areas->save($area)) {
+                    $this->Flash->set(null,['params' => ['class' => 'success']]);
+                    return $this->redirect(['action' => 'index']);
+                } else {
+                    $this->Flash->set(null,['params' => ['class' => 'error']]);
+                }         
             } else {
-                $this->Flash->error(__('The area could not be saved. Please, try again.'));
+                $this->Flash->set('Erro ao salvar. Por favor verifique os campos digitados',['params' => ['class' => 'error']]);
             }
+
         }
-        $parentAreas = $this->Areas->ParentAreas->find('list', ['limit' => 200]);
-        $profiles = $this->Areas->Profiles->find('list', ['limit' => 200]);
-        $this->set(compact('area', 'parentAreas', 'profiles'));
-        $this->set('_serialize', ['area']);
+
+        $ChildAreas = $this->Areas->ChildAreas->find('list',[
+            'keyField' => 'id',
+            'valueField' => function ($e) {
+                return $e->label_group_name . ' > ' . $e->controller_label . ' > ' . $e->action_label;
+            }
+        ]);
+        $this->set(compact('area', 'ChildAreas'));
+        $this->set('_serialize', ['area', 'ChildAreas']);
     }
 
     /**
@@ -79,20 +90,32 @@ class AreasController extends AppController
     public function edit($id = null)
     {
         $area = $this->Areas->get($id, [
-            'contain' => ['Profiles']
+            'contain' => ['ChildAreas']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $area = $this->Areas->patchEntity($area, $this->request->data);
-            if ($this->Areas->save($area)) {
-                $this->Flash->success(__('The area has been saved.'));
-                return $this->redirect(['action' => 'index']);
+            $area = $this->Areas->patchEntity($area, $this->request->data, ['associated' => ['ChildAreas']]);
+            if (!$area->errors()){
+                if ($this->Areas->save($area)) {
+                    $this->Flash->set(null,['params' => ['class' => 'success']]);
+                    return $this->redirect(['action' => 'index']);
+                } else {
+                   $this->Flash->set(null,['params' => ['class' => 'error']]);
+                }                
             } else {
-                $this->Flash->error(__('The area could not be saved. Please, try again.'));
+                $this->Flash->set('Erro ao salvar. Por favor verifique os campos digitados',['params' => ['class' => 'error']]);
             }
+
         }
-        $profiles = $this->Areas->Profiles->find('list', ['limit' => 200]);
-        $this->set(compact('area', 'profiles'));
-        $this->set('_serialize', ['area']);
+
+        $ChildAreas = $this->Areas->ChildAreas->find('list',[
+            'keyField' => 'id',
+            'valueField' => function ($e) {
+                return $e->label_group_name . ' > ' . $e->controller_label . ' > ' . $e->action_label;
+            }
+        ]);
+
+        $this->set(compact('area', 'ChildAreas'));
+        $this->set('_serialize', ['area', 'ChildAreas']);
     }
 
     /**
@@ -113,4 +136,5 @@ class AreasController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
 }

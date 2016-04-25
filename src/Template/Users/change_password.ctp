@@ -1,4 +1,4 @@
-<?= $this->Form->create($user) ?>
+<?= $this->BForm->create($user) ?>
 <fieldset>
     <legend><?= __('Alteração de senha') ?></legend>
     <?php

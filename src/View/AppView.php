@@ -39,10 +39,11 @@ class AppView extends View
         parent::initialize();
         $this->loadHelper('Url');
         $this->loadHelper('Paginator', ['templates' => 'paginator-templates']);
+        $this->loadHelper('BForm');
 
-        if ($this->request->action !== 'login'){
-            $this->loadHelper('Form', ['templates' => 'app_form']);
-        }
-        
+        // if ($this->request->action !== 'login'){
+        //     $this->loadHelper('Form', ['templates' => 'app_form']);
+        // }
+
     }
 }

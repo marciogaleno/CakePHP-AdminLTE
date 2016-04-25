@@ -6,13 +6,16 @@ if (!empty($params['class'])) {
 	if ($params['class'] == 'success'){
 		$class .= 'alert-success' ;
 		$message_default .= '<b>' . $controller_label . '</b>' . ' salvo com sucesso!';
-	}else if ($params['class'] == 'error') {
+	} elseif ($params['class'] == 'editSuccess') {
+		$class .= 'alert-success' ;
+		$message_default .= '<b>' . $controller_label . '</b>' . ' alterado com sucesso!';
+	} elseif ($params['class'] == 'error') {
 		$class .= 'alert-danger' ;
 		$message_default .= 'Erro ao salvar ' . '<b>' . $controller_label . '</b>';
-	}else if ($params['class'] == 'deleteSuccess'){
+	}elseif ($params['class'] == 'deleteSuccess') {
 		$class .= 'alert-success' ;
 		$message_default .= '<b>' . $controller_label . '</b>'. ' deletado com sucesso!';
-	}else if ($params['class'] == 'deleteError'){
+	}elseif ($params['class'] == 'deleteError') {
 		$class .= 'alert-danger' ;
 		$message_default .= 'Erro ao deletar ' . '<b>' . $controller_label . '</b>';		
 	}

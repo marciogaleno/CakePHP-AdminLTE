@@ -1,9 +1,4 @@
-<?php 
-    $this->Form->templates([
-        'radioFormGroup' => '<div class="radio">{{label}}{{input}}</div>'
-    ]);
-?>
-<?= $this->Form->create($profile) ?>
+<?= $this->BForm->create($profile) ?>
 <fieldset class="col-md-9">
     <legend><?= __('Add Profile') ?></legend>
         <?php

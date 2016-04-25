@@ -44,9 +44,10 @@ class UsersController extends AppController
         $this->checkAccess($this->name, __FUNCTION__);
 
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => ['Profiles'],
         ]);
 
+        $user->gender = $this->gender[$user->gender];
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
@@ -63,7 +64,7 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->set(null, ['params' => ['class' => 'success']]);
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $user->id]);
             } else {
                 $this->Flash->set(null, ['params' => ['class' => 'error']]);
             }
@@ -89,12 +90,13 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => ['Profiles']
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->set(null, ['params' => ['class' => 'editSuccess']]);
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -103,6 +105,9 @@ class UsersController extends AppController
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
+
+        $this->set('options_profiles', $this->Users->Profiles->find('list'));
+        $this->set('options_genders', $this->gender);
     }
 
     /**

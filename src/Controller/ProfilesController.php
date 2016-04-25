@@ -52,18 +52,19 @@ class ProfilesController extends AppController
     public function add()
     {
         $profile = $this->Profiles->newEntity();
+
         if ($this->request->is('post')) {
-            $profile = $this->Profiles->patchEntity($profile, $this->request->data);
+            $profile = $this->Profiles->patchEntity($profile, $this->request->data, ['associated' => ['Areas']]);
             if ($this->Profiles->save($profile)) {
-                $this->Flash->success(__('The profile has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->set(null, ['params' => ['class' => 'success']]);
+                return $this->redirect(['action' => 'view', $profile->id]);
             } else {
-                $this->Flash->error(__('The profile could not be saved. Please, try again.'));
+                $this->Flash->set(null, ['params' => ['class' => 'error']]);
             }
         }
         $areas = $this->Profiles->Areas->lists();
         $this->set(compact('profile', 'areas'));
-        $this->set('_serialize', ['profile', 'areas']);
+        $this->set('_serialize', ['profile']);
     }
 
     /**
@@ -81,12 +82,9 @@ class ProfilesController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $profile = $this->Profiles->patchEntity($profile, $this->request->data, ['associated' => ['Areas']]);
-            if ($profile->errors()){
-                dump($profile->errors());
-            }
             if ($this->Profiles->save($profile)) {
-                $this->Flash->success(__('The profile has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->set(null, ['params' => ['class' => 'editSuccess']]);
+                return $this->redirect(['action' => 'view', $profile->id]);
             } else {
                 $this->Flash->error(__('The profile could not be saved. Please, try again.'));
             }

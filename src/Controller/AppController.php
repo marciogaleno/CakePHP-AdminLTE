@@ -33,6 +33,8 @@ class AppController extends Controller
     public $controllerLabel;
 
     private $title_for_layout;
+
+    public $default_template_form;
     /**
      * Initialization hook method.
      *
@@ -75,6 +77,7 @@ class AppController extends Controller
 
         $this->title_for_layout = 'Cordel';
         $this->controllerLabel = $this->Session->read("Auth.User.Profile.{$this->request->param('controller')}.controller_label");
+        $this->default_template_form = 'askdfkasd';
 
     }
 

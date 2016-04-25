@@ -1,16 +1,11 @@
-<?php 
-    $this->Form->templates([
-        'radioFormGroup' => '<div class="radio">{{label}}{{input}}</div>'
-    ]);
-?>
-<?= $this->Form->create($profile) ?>
+<?= $this->BForm->create($profile) ?>
 <fieldset class="col-md-9">
-    <legend><?= __('Add Profile') ?></legend>
+    <legend><?= __('Adicionar perfil') ?></legend>
         <?php
-            echo $this->Form->input('Profiles.name', ['teste']);
+            echo $this->Form->input('name', ['teste']);
         ?>
     <div class="box box-solid">
-        <?= $this->Form->input('areas', ['options' => $areas, 'multiple' => 'checkbox', 'label' => false, 'hiddenField' => false]);?>
+        <?= $this->Form->input('areas._ids', ['options' => $areas, 'multiple' => 'checkbox', 'label' => false, 'hiddenField' => false]);?>
     </div>
 
     <?php

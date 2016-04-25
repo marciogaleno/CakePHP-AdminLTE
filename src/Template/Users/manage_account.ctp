@@ -1,4 +1,4 @@
-<?= $this->Form->create($user) ?>
+<?= $this->BForm->create($user) ?>
 <fieldset>
     <legend><?= __('Meus dados') ?></legend>
     <?php
