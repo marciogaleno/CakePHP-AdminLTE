@@ -10,7 +10,7 @@
       <table class="table table-bordered table-striped">
         <thead>
             <tr>
-              <th> <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button></th>
+              <th>#</th>
               <th>Nome</th>
               <th>Ações</th>
             </tr>
@@ -19,7 +19,7 @@
           <?php if (!empty($profiles)) :?>
             <?php foreach($profiles as $profile):?>
               <tr>
-                <td><input type="checkbox"></td>
+                <td><i class="fa fa-tag"></i></td>
                 <td><?= $profile->name ?></td>
                 <td>
                   <?= $this->element('buttonsCrud', [

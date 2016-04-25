@@ -78,6 +78,7 @@ class ProfilesTable extends Table
                     'Areas' => function ($query){
                         return $query->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon_group_menu', 'Areas.appear'])
                                      ->contain([
+                                        'GroupsMenu',
                                         'ChildAreas' => function ($q) {
                                             return $q->select(['ChildAreas.controller', 'ChildAreas.controller_label', 'ChildAreas.action','ChildAreas.parent_id', 'ChildAreas.appear'])
                                                      ->order(['controller_label' => 'ASC']);
@@ -88,7 +89,7 @@ class ProfilesTable extends Table
                 ->toArray();
 
         $areas = array();
-
+        dump($profile);
         foreach ($profile[0]->areas as $parent_area) {         
 
             $areas[$parent_area->controller]['controller_label'] = $parent_area->controller_label;

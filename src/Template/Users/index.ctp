@@ -9,7 +9,7 @@
     <table class="table table-bordered table-striped">
       <thead>
           <tr>
-            <th class="sorting"> <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button></th>
+            <th>#</th>
             <th>Nome</th>
             <th>E-mail</th>
             <th>Perfil</th>
@@ -20,7 +20,7 @@
         <?php if (!empty($users)) :?>
           <?php foreach($users as $user):?>
             <tr>
-              <td><input type="checkbox"></td>
+              <td><i class="fa fa-user"></i></td>
               <td><?= $user->name ?></td>
               <td><?= $user->email?></td>
               <td><?= $user->profile->name?></td>

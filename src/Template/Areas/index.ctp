@@ -10,21 +10,29 @@
       <table class="table table-bordered table-striped">
         <thead>
             <tr>
-              <th> <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button></th>
+              <th>ID</th>
+              <th>Parent id</th>
               <th>Grupo</th>
+              <th>Grupo Label</th>
               <th>Aparecer</th>
               <th>Controller</th>
+              <th>Controller_label</th>
               <th>Action</th>
+              <th>Action label</th>
             </tr>
         </thead>
         <tbody>
           <?php if (!empty($areas)) :?>
             <?php foreach($areas as $area):?>
               <tr>
-                <td><input type="checkbox"></td>
+                <td><?= $area->id ?></td>
+                <td><?= $area->parent_id ?></td>
+                <td><?= $area->name_group_menu ?></td>
                 <td><?= $area->label_group_name ?></td>
                 <td><?= $area->appear ?></td>
+                <td><?= $area->controller ?></td>
                 <td><?= $area->controller_label ?></td>
+                <td><?= $area->action ?></td>
                 <td><?= $area->action_label ?></td>
                 <td>
                   <?= $this->element('buttonsCrud', [
