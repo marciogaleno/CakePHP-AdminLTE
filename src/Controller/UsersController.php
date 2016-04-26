@@ -19,7 +19,7 @@ class UsersController extends AppController
      */
     public function index()
     {   
-        //$this->checkAccess($this->name, __FUNCTION__);
+        $this->checkAccess($this->name, __FUNCTION__);
 
         $this->paginate = [
             'limit' => 15,
@@ -59,6 +59,8 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
@@ -89,6 +91,8 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $user = $this->Users->get($id, [
             'contain' => ['Profiles']
         ]);
@@ -119,6 +123,8 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
@@ -151,6 +157,7 @@ class UsersController extends AppController
 
     public function manageAccount() 
     {
+        $this->checkAccess($this->name, __FUNCTION__);
 
         $user = $this->Users->get($this->Auth->user('id'));
 
@@ -183,9 +190,8 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {    
                 $this->Flash->set("Sua senha foi alterada com <strong>sucesso</strong>.", ['params' => ['class' => 'success']]);
-                $this->Session->write("Auth.User.name", $this->request->data('name'));
                 $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
-                return $this->redirect($this->referer());
+                return $this->redirect('/');
             }
             else
                 $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);

@@ -42,6 +42,8 @@ class AreasController extends AppController
      */
     public function view($id = null)
     {   
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $area = $this->Areas->get($id, [
             'contain' => ['ChildAreas']
         ]);
@@ -57,6 +59,8 @@ class AreasController extends AppController
      */
     public function add()
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $area = $this->Areas->newEntity();
         if ($this->request->is('post')) {
             $area = $this->Areas->patchEntity($area, $this->request->data, ['associated' => ['ChildAreas']]);
@@ -95,6 +99,8 @@ class AreasController extends AppController
      */
     public function edit($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $area = $this->Areas->get($id, [
             'contain' => ['ChildAreas']
         ]);
@@ -135,6 +141,8 @@ class AreasController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+        
         $this->request->allowMethod(['post', 'delete']);
         $area = $this->Areas->get($id);
         if ($this->Areas->delete($area)) {

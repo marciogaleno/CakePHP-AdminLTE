@@ -20,7 +20,9 @@ class ProfilesController extends AppController
      * @return \Cake\Network\Response|null
      */
     public function index()
-    {          
+    {   
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $profiles = $this->paginate($this->Profiles);
 
         $this->set(compact('profiles'));
@@ -36,6 +38,8 @@ class ProfilesController extends AppController
      */
     public function view($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $profile = $this->Profiles->get($id, [
             'contain' => ['Areas']
         ]);
@@ -51,6 +55,8 @@ class ProfilesController extends AppController
      */
     public function add()
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $profile = $this->Profiles->newEntity();
 
         if ($this->request->is('post')) {
@@ -76,6 +82,8 @@ class ProfilesController extends AppController
      */
     public function edit($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $profile = $this->Profiles->get($id, [
             'contain' => ['Areas']
         ]);
@@ -103,6 +111,8 @@ class ProfilesController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+        
         $this->request->allowMethod(['post', 'delete']);
         $profile = $this->Profiles->get($id);
         if ($this->Profiles->delete($profile)) {

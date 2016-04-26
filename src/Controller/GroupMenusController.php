@@ -38,7 +38,9 @@ class GroupMenusController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
-    {
+    {   
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $groupMenu = $this->GroupMenus->get($id, [
             'contain' => ['Areas']
         ]);
@@ -54,6 +56,8 @@ class GroupMenusController extends AppController
      */
     public function add()
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $groupMenu = $this->GroupMenus->newEntity();
         if ($this->request->is('post')) {
             $groupMenu = $this->GroupMenus->patchEntity($groupMenu, $this->request->data);
@@ -77,6 +81,8 @@ class GroupMenusController extends AppController
      */
     public function edit($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+
         $groupMenu = $this->GroupMenus->get($id, [
             'contain' => []
         ]);
@@ -102,6 +108,8 @@ class GroupMenusController extends AppController
      */
     public function delete($id = null)
     {
+        $this->checkAccess($this->name, __FUNCTION__);
+        
         $this->request->allowMethod(['post', 'delete']);
         $groupMenu = $this->GroupMenus->get($id);
         if ($this->GroupMenus->delete($groupMenu)) {
