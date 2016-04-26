@@ -97,6 +97,12 @@ class UsersController extends AppController
             'contain' => ['Profiles']
         ]);
 
+        if ($this->isAdmin($user->$id) && $this->isAdmin($user->id)) {
+
+            $this->Flash->set("Você não pode <strong>editar</strong> o usuário <strong>Master</strong>.", ['params' => ['class' => 'error']]);
+            return $this->redirect(['action' => 'index']);
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
@@ -127,6 +133,14 @@ class UsersController extends AppController
 
         $this->request->allowMethod(['post', 'delete']);
         $id = $this->request->data['id'];
+
+        if ($this->isAdmin($id) && $this->isAdmin($id)) {
+
+            $this->Flash->set("Você não pode <strong>excluir</strong> o usuário <strong>Master</strong>.", ['params' => ['class' => 'error']]);
+            return $this->redirect(['action' => 'index']);
+        }
+
+
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
             $this->Flash->set(null, ['params' => ['class' => 'deleteSuccess']]);

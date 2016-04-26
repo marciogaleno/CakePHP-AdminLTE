@@ -11,6 +11,7 @@ use Cake\Event\Event;
 use Cake\ORM\Entity;
 
 
+
 /**
  * Users Model
  *
@@ -138,26 +139,6 @@ class UsersTable extends Table
         return $context['data']['passwordConfirm'] == $context['data']['newPassword'];
     }
 
-    public static function isAdmin( $profile_id = null )
-    {
-
-        if( !$profile_id ){
-            $profile_id = $this->Auth->user("profile_id");
-        }
-
-        return $profile_id == Configure::read( 'AdminProfileId' );
-    }
-
-    public static function isAdminUser( $user_id = null )
-    {
-
-        if( !$user_id ){
-            $user_id = $this->Auth->user("id");
-        }
-
-        return $user_id == Configure::read( 'AdminUserId' );
-    }
-
    
     public function beforeSave(Event $event, Entity $entity) 
     {   
@@ -181,6 +162,15 @@ class UsersTable extends Table
             }
         }
         
+    }
+
+    public function beforeDelete(Event $event, Entity $entity)
+    {
+        if ($entity->id === 1) {
+            return false;
+        }
+
+        return true;
     }   
 
 }

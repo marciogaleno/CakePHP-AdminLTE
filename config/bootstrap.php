@@ -62,6 +62,10 @@ use Cake\Utility\Security;
  * idea to create multiple configuration files, and separate the configuration
  * that changes from configuration that does not. This makes deployment simpler.
  */
+// Defining Admin User and Admin Profiles IDs
+Configure::write('AdminUserId', 1);
+Configure::write('AdminProfileId', 1);
+
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
@@ -211,6 +215,3 @@ Type::build('datetime')
     ->useImmutable()
     ->useLocaleParser();
 
-// Defining Admin User and Admin Profiles IDs
-Configure::write('AdminUserId', 1);
-Configure::write('AdminProfileId', 1);

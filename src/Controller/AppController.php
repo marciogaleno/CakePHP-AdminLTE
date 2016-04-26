@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Core\Configure;
 
 /**
  * Application Controller
@@ -152,6 +153,23 @@ class AppController extends Controller
         }
     }
 
+    public function isAdmin( $profile_id = null )
+    {   
+        if( !$profile_id ) {
+            $profile_id = $this->Auth->user("profile_id");
+        }
 
+        return $profile_id == Configure::read( 'AdminProfileId' );
+    }
+
+    public function isAdminUser( $user_id = null )
+    {   
+        Configure::read( 'AdminUserId' );die;
+        if( !$user_id ){
+            $user_id = $this->Auth->user("id");
+        }
+
+        return $user_id == Configure::read( 'AdminUserId' );
+    }
 
 }
