@@ -1,6 +1,8 @@
 <?php
 $class = '';
 $message_default = '';
+$position_s = strripos($controller_label, "s");
+$controller_label = substr($controller_label, 0, ($position_s));
 
 if (!empty($params['class'])) {
 	if ($params['class'] == 'success'){
