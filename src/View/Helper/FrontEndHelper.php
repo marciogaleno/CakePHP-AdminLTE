@@ -80,7 +80,7 @@ class FrontEndHelper extends Helper
 		$string = '';
 		$areas_by_group = $this->request->session()->read( "Auth.User.Menu" );
 		$permissions = $this->request->session()->read( "Auth.User.Profile" );
-
+		dump($areas_by_group);
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';
 
@@ -102,7 +102,7 @@ class FrontEndHelper extends Helper
 				foreach ($group['areas'] as $area) {
 					
 					// se tiver permissao para controller/action
-					if( !empty( $permissions[ $area->controller ][ 'action' ][ $area->action ] ) ){
+					if ( !empty( $permissions[ $area->controller ][ 'action' ][ $area->action ] ) ) {
 						if( !empty( $area->group_menu->id) ){
 	
 								$string .= '<li class="active">' .

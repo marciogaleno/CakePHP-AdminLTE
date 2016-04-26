@@ -45,7 +45,7 @@ class MenuComponent extends Component
                         return $query->where(['Areas.appear' => '1', function ($exp, $q) {
                                 			return $exp->isNull('parent_id');
                          				}])
-								 		->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.icon', 'Areas.parent_id', 'GroupMenus.id', 'GroupMenus.name','GroupMenus.icon'])
+								 		->select(['Areas.controller', 'Areas.controller_label', 'Areas.action', 'Areas.id', 'Areas.icon', 'Areas.parent_id', 'GroupMenus.id', 'GroupMenus.name','GroupMenus.icon'])
 							 			->contain([
 								 		'GroupMenus',
 								 		'ChildAreas' => function ($q) {

@@ -76,7 +76,7 @@ class ProfilesTable extends Table
                 ->where(['id' =>  $profile_id])
                 ->contain([
                     'Areas' => function ($query){
-                        return $query->select(['Areas.name_group_menu', 'Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon', 'Areas.appear', 'GroupMenus.id', 'GroupMenus.name'])
+                        return $query->select(['Areas.controller', 'Areas.controller_label', 'Areas.action','Areas.action_label', 'Areas.id', 'Areas.parent_id', 'Areas.icon', 'Areas.appear', 'GroupMenus.id', 'GroupMenus.name'])
                                      ->contain([
                                         'GroupMenus',
                                         'ChildAreas' => function ($q) {
