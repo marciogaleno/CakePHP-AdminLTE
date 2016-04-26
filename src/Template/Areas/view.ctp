@@ -58,5 +58,6 @@
   </div>
   </br>
 </div>
+<?= $this->element('deleteModal', ['title' => 'Exclusão de Área', 'msg' => 'Tem certeza que deseja excluir essa área?']);?>
 
              

@@ -41,5 +41,7 @@
   </div>
   </br>
 </div>
+<?= $this->element('deleteModal', ['title' => 'Exclusão Usuário', 'msg' => 'Tem certeza que deseja excluir esse usuário?']);?>
+
 
              

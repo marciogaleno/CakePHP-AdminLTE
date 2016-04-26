@@ -36,5 +36,7 @@
   </div>
   </br>
 </div>
+<?= $this->element('deleteModal', ['title' => 'Exclusão de Perfil', 'msg' => 'Tem certeza que deseja excluir esse perfil?']);?>
+
 
              

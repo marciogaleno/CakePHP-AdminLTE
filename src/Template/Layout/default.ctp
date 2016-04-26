@@ -39,6 +39,13 @@
     <link rel="stylesheet" href="<?= $this->request->webroot . 'adminlte/plugins/datepicker/datepicker3.css' ?>"/>
     <link rel="stylesheet" href="<?= $this->request->webroot . 'adminlte/plugins/daterangepicker/daterangepicker-bs3.css' ?>"/>
     <link rel="stylesheet" href="<?= $this->request->webroot . 'adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' ?>"/>
+
+    <!-- jQuery 2.1.4 -->
+    <script src="<?= $this->request->webroot . 'adminlte/plugins/jQuery/jQuery-2.1.4.min.js' ?>"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 </head>
 <body class="sidebar-mini skin-green wysihtml5-supported">
 <!--  <body class="sidebar-mini skin-green-light wysihtml5-supported">
@@ -52,11 +59,6 @@
 
     </div><!-- ./wrapper -->
 
-    <!-- jQuery 2.1.4 -->
-    <script src="<?= $this->request->webroot . 'adminlte/plugins/jQuery/jQuery-2.1.4.min.js' ?>"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
       $.widget.bridge('uibutton', $.ui.button);
     </script>

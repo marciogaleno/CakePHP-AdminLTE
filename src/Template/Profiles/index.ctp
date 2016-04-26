@@ -42,3 +42,4 @@
     </div><!-- /.pull-right -->
   </div>
 </div>
+<?= $this->element('deleteModal');?>

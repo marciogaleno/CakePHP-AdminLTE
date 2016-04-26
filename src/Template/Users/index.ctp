@@ -46,4 +46,6 @@
   </div>
 </div>
 
+<?= $this->element('deleteModal');?>
+
              

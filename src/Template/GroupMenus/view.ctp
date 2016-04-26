@@ -31,5 +31,5 @@
   </div>
   </br>
 </div>
-
+<?= $this->element('deleteModal', ['title' => 'Exclusão de Grupo de Menu', 'msg' => 'Tem certeza que deseja excluir esse grupo de menu?']);?>
              
