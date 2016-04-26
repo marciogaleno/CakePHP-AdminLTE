@@ -21,7 +21,8 @@ class AreasController extends AppController
         $this->checkAccess($this->name, __FUNCTION__);
 
         $this->paginate = [
-            'contain' => ['ChildAreas', 'GroupMenus']
+            'contain' => ['ChildAreas', 'GroupMenus'],
+            'limit' => 15
         ];
         
         $areas = $this->paginate($this->Areas);
