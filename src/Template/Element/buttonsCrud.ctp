@@ -66,11 +66,11 @@ $this->element('buttonsCrud', [
 					$label_action = $this->request->session()->read("Auth.User.Profile.{$this->name}.actions_labels.{$action}");
 					$icon = '<i class="fa ' . (!empty($class_icons_default[$action]) ? $class_icons_default[$action] : '') . '"></i>';
 
-					echo $this->Form->button("{$icon} {$label_action}", ['class' => 'btn btn-danger btn-sm', 'type' => 'submit', 'form' => "form{$value->id}"]);
+					echo $this->Form->button("{$icon} {$label_action}", ['class' => 'btn btn-danger btn-sm delete', 'type' => 'submit', 'form' => "form{$value->id}"]);
 					
 				?>
-				<form action="<?=$this->Url->build(['controller' => $this->name, 'action' => 'delete', $value->id]) ?>" method="POST" id="form<?=$value->id?>">
-
+				<form action="<?=$this->Url->build(['controller' => $this->name, 'action' => 'delete']) ?>" method="POST" id="form<?=$value->id?>">
+				<input type="hidden" value="<?= $value->id ?>" name="id">
 				</form>
 			<?php }?>
 		<?php endif;?>
