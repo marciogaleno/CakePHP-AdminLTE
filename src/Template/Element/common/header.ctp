@@ -26,6 +26,7 @@
           <?php endif;?>
 
             <span class="hidden-xs"><?= $this->request->session()->read('Auth.User.name'); ?></span>
+            &nbsp;<i class="fa fa-gears"></i>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
@@ -64,10 +65,6 @@
               </div>
             </li>
           </ul>
-        </li>
-        <!-- Control Sidebar Toggle Button -->
-        <li>
-          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
         </li>
       </ul>
     </div>
