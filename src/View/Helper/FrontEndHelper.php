@@ -84,6 +84,12 @@ class FrontEndHelper extends Helper
 		$string .= '<ul class="sidebar-menu">';
 		$string .= '<li class="header">Menu</li>';
 
+		$string  .= '<li class="' . ( ($this->request->param('controller') == 'Pages') ? 'active' : null ). '">';
+        $string .= '<a href="'. $this->Url->build('/') . '">
+                        <i class="fa fa-dashboard"></i> <span>Home</span>
+                    </a>';
+        $string .= '</li>';
+
 		foreach ($areas_by_group as $group_id => $group) {
 
 			//Se for array é porque é um grupo
