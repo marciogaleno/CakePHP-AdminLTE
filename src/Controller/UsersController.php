@@ -206,7 +206,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {    
                 $this->Flash->set("Sua senha foi alterada com <strong>sucesso</strong>.", ['params' => ['class' => 'success']]);
                 $this->Session->write("Auth.User.pass_switched", $user->pass_switched);
-                return $this->redirect('/');
+                return $this->redirect($this->referer());
             }
             else
                 $this->Flash->set("Ocorreu um <strong>erro</strong> ao tentar atualizar seus dados. Por favor tente novamente.", ['params' => ['class' => 'error']]);
