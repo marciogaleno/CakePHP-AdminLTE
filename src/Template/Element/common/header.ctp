@@ -26,7 +26,7 @@
           <?php endif;?>
 
             <span class="hidden-xs"><?= $this->request->session()->read('Auth.User.name'); ?></span>
-            &nbsp;<i class="fa fa-gears"></i>
+            &nbsp;<i class="fa fa-caret-down"></i>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
