@@ -1,6 +1,6 @@
 <?= $this->Form->create() ?>
   <div class="form-group has-feedback">
-    <?= $this->Form->input('email', ['class' => 'form-control', 'placeholder' => 'E-mail', 'label' => false])?>
+    <?= $this->Form->input('email', ['type' => 'text', 'class' => 'form-control', 'placeholder' => 'E-mail', 'label' => false])?>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback">
@@ -19,4 +19,4 @@
       <?= $this->Form->submit('Entrar', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
     </div>
   </div>
-  <?= $this->Form->end()?>
+<?= $this->Form->end()?>
